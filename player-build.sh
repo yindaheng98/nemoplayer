@@ -1,4 +1,5 @@
 #!/bin/sh
+rm -rf build
 ./configure \
     --disable-vp8 \
     --enable-vp9 \
