@@ -1,4 +1,4 @@
 [submodule "libvpx"]
 	path = libvpx
-	url = https://github.com/webmproject/libvpx
-	branch = v1.7.0
+	url = https://github.com/yindaheng98/nemo-libvpx
+	branch = fogsr-resease3.0-fix-sr_buf
