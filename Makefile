@@ -1,2 +1,4 @@
-libvpx.a:
-	cd build && make libvpx.a
+install:
+	cd build && make install
+clean:
+	cd build && make clean
