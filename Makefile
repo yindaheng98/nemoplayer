@@ -29,5 +29,10 @@ player.c.o: all
 LDFLAGS += -L. -lvpx -lm -lpthread
 LDFLAGS += -m64 -g
 
+LDFILES += ivfdec.c.o
+LDFILES += tools_common.c.o
+LDFILES += video_reader.c.o
+LDFILES += y4minput.c.o
+
 player: player.c.o
-	cd build && g++ -o ../$@  ivfdec.c.o tools_common.c.o video_reader.c.o ../$< $(LDFLAGS)
+	cd build && g++ -o ../$@  $(LDFILES) ../$< $(LDFLAGS)

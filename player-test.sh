@@ -1,4 +1,7 @@
 #!/bin/sh
+
+make player
+
 VIDEOPATH=$1
 DSTPATH=$2
 eval `ffprobe -v error -select_streams v:0 -show_entries stream=width,height -of default=nw=1 $VIDEOPATH`

@@ -147,7 +147,7 @@ int main(int argc, char **argv) {
                                 : vpx_video_reader_open_stdin(argv[1]);
   if (!reader) die("Failed to open stdin for reading.");
 
-  if (!(outfile = strcmp(argv[2], "-") ? stdout : fopen(argv[2], "wb")))
+  if (!(outfile = strcmp(argv[2], "-") ? fopen(argv[2], "wb") : stdout))
     die("Failed to open stdout for writing.");
 
   info = vpx_video_reader_get_info(reader);

@@ -1,0 +1,4 @@
+[submodule "libvpx"]
+	path = libvpx
+	url = https://github.com/webmproject/libvpx
+	branch = v1.7.0
