@@ -141,10 +141,13 @@ int main(int argc, char **argv) {
 
   exec_name = argv[0];
 
-  reader = vpx_video_reader_open_stdin();
+  if (argc != 3) die("Invalid number of arguments.");
+
+  reader = strcmp(argv[1], "-") ? vpx_video_reader_open(argv[1])
+                                : vpx_video_reader_open_stdin(argv[1]);
   if (!reader) die("Failed to open stdin for reading.");
 
-  if (!(outfile = stdout))
+  if (!(outfile = strcmp(argv[2], "-") ? stdout : fopen(argv[2], "wb")))
     die("Failed to open stdout for writing.");
 
   info = vpx_video_reader_get_info(reader);
@@ -152,7 +155,8 @@ int main(int argc, char **argv) {
   decoder = get_vpx_decoder_by_fourcc(info->codec_fourcc);
   if (!decoder) die("Unknown input codec.");
 
-  fprintf(stderr, "Using %s\n", vpx_codec_iface_name(decoder->codec_interface()));
+  fprintf(stderr, "Using %s\n",
+          vpx_codec_iface_name(decoder->codec_interface()));
 
   if (vpx_codec_dec_init(&codec, decoder->codec_interface(), NULL, 0))
     die_codec(&codec, "Failed to initialize decoder.");
