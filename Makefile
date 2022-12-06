@@ -1,5 +1,5 @@
 all:
-	cd build && make V=1 all
+	cd build && make all
 clean:
 	cd build && make clean
 

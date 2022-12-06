@@ -9,6 +9,6 @@ rm -rf build
     --log=yes \
     --enable-internal-stats \
     --disable-unit-tests \
-    --enable-tools \
-    --disable-install-docs \
-    --enable-install-srcs
+    --disable-tools \
+    --disable-docs \
+    --enable-libyuv
