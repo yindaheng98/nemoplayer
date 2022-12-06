@@ -203,6 +203,8 @@ int main(int argc, char **argv) {
   vpx_video_reader_close(reader);
 
   fclose(outfile);
+  
+  fprintf(stderr, "\n");
 
   return EXIT_SUCCESS;
 }
