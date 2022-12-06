@@ -1,5 +1,6 @@
 #!/bin/sh -x
 
+make player-clean
 make player
 
 VIDEOPATH=$1 # 原始高清视频路径（读取）
