@@ -1,5 +1,16 @@
 # Player
 
+## Build
+
+```sh
+git submodule update --init --recursive
+git submodule update --remote --recursive
+./player-build.sh
+make player
+```
+
+## Run
+
 ```sh
 VIDEOROOT=/root/Programs/视频数据
 SCALE=4
