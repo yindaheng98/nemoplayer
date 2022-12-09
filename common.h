@@ -13,3 +13,13 @@ struct VpxVideoReaderStruct {
 };
 
 VpxVideoReader *vpx_video_reader_open_stdin();
+
+struct PlayerStruct {
+  vpx_image_t raw;
+  vpx_codec_ctx_t codec;
+};
+
+typedef struct PlayerStruct Player;
+
+void init(Player *player, const VpxVideoInfo *info, vpx_img_fmt_t img_fmt,
+          int scale);

@@ -97,11 +97,11 @@ void usage_exit(void) {
 }
 
 int main(int argc, char **argv) {
+  Player *player;
   int frame_cnt = 0;
   FILE *outfile = NULL;
   vpx_codec_ctx_t codec;
   VpxVideoReader *reader = NULL;
-  const VpxInterface *decoder = NULL;
   const VpxVideoInfo *info = NULL;
 
   FILE *sr_infile = NULL;
@@ -116,29 +116,18 @@ int main(int argc, char **argv) {
   reader = strcmp(argv[1], "-") ? vpx_video_reader_open(argv[1])
                                 : vpx_video_reader_open_stdin(argv[1]);
   if (!reader) die("Failed to open stdin for reading.");
-
   if (!(outfile = strcmp(argv[2], "-") ? fopen(argv[2], "wb") : stdout))
     die("Failed to open stdout for writing.");
+  if (!(sr_infile = strcmp(argv[3], "-") ? fopen(argv[3], "rb") : stdin))
+    die("Failed to open %s for reading.", argv[3]);
+  scale = (int)strtol(argv[4], NULL, 0);
 
   info = vpx_video_reader_get_info(reader);
 
-  scale = (int)strtol(argv[4], NULL, 0);
-  if (!vpx_img_alloc(&raw, VPX_IMG_FMT_I420, info->frame_width * scale,
-                     info->frame_height * scale, 1)) {
-    die("Failed to allocate image.");
-  }
-
-  if (!(sr_infile = strcmp(argv[3], "-") ? fopen(argv[3], "rb") : stdin))
-    die("Failed to open %s for reading.", argv[3]);
-
-  decoder = get_vpx_decoder_by_fourcc(info->codec_fourcc);
-  if (!decoder) die("Unknown input codec.");
-
-  fprintf(stderr, "Using %s\n",
-          vpx_codec_iface_name(decoder->codec_interface()));
-
-  if (vpx_codec_dec_init(&codec, decoder->codec_interface(), NULL, 0))
-    die_codec(&codec, "Failed to initialize decoder.");
+  player = (Player *)malloc(sizeof(Player));
+  init(player, info, VPX_IMG_FMT_I420, scale);
+  codec = player->codec;
+  raw = player->raw;
 
   skip = (int)strtol(argv[5], NULL, 0);
   while (vpx_video_reader_read_frame(reader)) {
@@ -167,7 +156,7 @@ int main(int argc, char **argv) {
   vpx_video_reader_close(reader);
 
   fclose(outfile);
-  
+
   fprintf(stderr, "\n");
 
   return EXIT_SUCCESS;
