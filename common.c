@@ -41,7 +41,7 @@ void error_codec(vpx_codec_ctx_t *ctx, const char *s) {
   const char *detail = vpx_codec_error_detail(ctx);
 
   printf("%s: %s\n", s, vpx_codec_error(ctx));
-  if (detail) fprintf("    %s\n", detail);
+  if (detail) fprintf(stderr, "    %s\n", detail);
 };
 
 vpx_codec_err_t init(Player *player, const VpxVideoInfo *info,
@@ -84,4 +84,51 @@ vpx_image_t *get_frame(Player *player) {
       vpx_codec_get_frame(&player->codec, &player->get_frame_iter);
   if (img == NULL) player->get_frame_iter = NULL;
   return img;
+}
+
+void buf2img(unsigned char *buffer, vpx_image_t *img) {
+  int plane;
+
+  for (plane = 0; plane < 3; ++plane) {
+    unsigned char *buf = img->planes[plane];
+    const int stride = img->stride[plane];
+    const int w = vpx_img_plane_width(img, plane) *
+                  ((img->fmt & VPX_IMG_FMT_HIGHBITDEPTH) ? 2 : 1);
+    const int h = vpx_img_plane_height(img, plane);
+    int y;
+
+    for (y = 0; y < h; ++y) {
+      memcpy(buf, buffer, w);
+      buf += stride;
+      buffer += w;
+    }
+  }
+}
+
+vpx_codec_err_t set_sr_frame(Player *player, unsigned char *img_buf,
+                             int scale) {
+  buf2img(img_buf, &player->sr_raw);
+  return vpx_codec_set_sr_frame(&player->codec, &player->sr_raw, scale);
+}
+
+size_t get_img_buf_data_sz(vpx_image_t *img) {
+  int plane;
+  size_t data_sz = 0;
+
+  for (plane = 0; plane < 3; ++plane) {
+    const int w = vpx_img_plane_width(img, plane) *
+                  ((img->fmt & VPX_IMG_FMT_HIGHBITDEPTH) ? 2 : 1);
+    const int h = vpx_img_plane_height(img, plane);
+    int y;
+
+    for (y = 0; y < h; ++y) {
+      data_sz += w;
+    }
+  }
+
+  return data_sz;
+}
+
+size_t get_sr_frame_buf_data_sz(Player *player) {
+  return get_img_buf_data_sz(&player->sr_raw);
 }

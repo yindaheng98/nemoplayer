@@ -27,3 +27,5 @@ vpx_codec_err_t init(Player *player, const VpxVideoInfo *info,
 vpx_codec_err_t decode(Player *player, const uint8_t *data,
                        unsigned int data_sz, void *user_priv, long deadline);
 vpx_image_t *get_frame(Player *player);
+vpx_codec_err_t set_sr_frame(Player *player, unsigned char *img_buf, int scale);
+size_t get_sr_frame_buf_data_sz(Player *player);
