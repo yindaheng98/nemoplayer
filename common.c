@@ -35,7 +35,7 @@ VpxVideoReader *vpx_video_reader_open_stdin() {
   return reader;
 };
 
-void error(const char *msg) { fprintf(stderr, msg); }
+void error(const char *msg) { fprintf(stderr, "%s", msg); }
 
 void error_codec(vpx_codec_ctx_t *ctx, const char *s) {
   const char *detail = vpx_codec_error_detail(ctx);
@@ -108,7 +108,7 @@ vpx_codec_err_t get_frame(Player *player, unsigned char *img_buf) {
     return VPX_CODEC_LIST_END;
   }
   if (img2buf(img, img_buf) != get_sr_frame_buf_data_sz(player)) {
-    error("Cannot convert this img to buf");
+    error("Cannot convert this img to buf.");
     return VPX_CODEC_MEM_ERROR;
   }
   return VPX_CODEC_OK;
@@ -139,7 +139,7 @@ size_t buf2img(unsigned char *buffer, vpx_image_t *img) {
 vpx_codec_err_t set_sr_frame(Player *player, unsigned char *img_buf,
                              int scale) {
   if (buf2img(img_buf, &player->sr_raw) != get_sr_frame_buf_data_sz(player)) {
-    error("Cannot convert this buf to img");
+    error("Cannot convert this buf to img.");
     return VPX_CODEC_MEM_ERROR;
   }
   return vpx_codec_set_sr_frame(&player->codec, &player->sr_raw, scale);
@@ -165,4 +165,14 @@ size_t get_img_buf_data_sz(vpx_image_t *img) {
 
 size_t get_sr_frame_buf_data_sz(Player *player) {
   return get_img_buf_data_sz(&player->sr_raw);
+}
+
+vpx_codec_err_t destory(Player *player) {
+  vpx_codec_err_t error = vpx_codec_destroy(&player->codec);
+  if (error) {
+    error_codec(&player->codec, "Failed to destroy codec.");
+    return error;
+  }
+  vpx_img_free(&player->sr_raw);
+  return VPX_CODEC_OK;
 }
