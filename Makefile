@@ -40,13 +40,17 @@ LDFILES += common.c.o
 player: deps
 	cd build && g++ -o ../$@  $(LDFILES) player.c.o $(LDFLAGS)
 
+player.a: deps
+	cd build && ar -crsv libnemoplayer.a $(LDFILES)
+
 player.so: deps
 	cd build && ../player.so.sh
 
-common-clean:
-	rm common.c.o
-player-clean: common-clean
-	rm player.c.o
-	rm player
+player-clean:
+	rm -f common.c.o
+	rm -f player.c.o
+	rm -f player
+	rm -f build/nemoplayer.so
+	rm -f build/libnemoplayer.a
 clean: player-clean
 	cd build && make clean
