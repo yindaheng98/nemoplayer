@@ -30,3 +30,5 @@ vpx_codec_err_t get_frame(Player *player, unsigned char *buffer);
 vpx_codec_err_t set_sr_frame(Player *player, unsigned char *img_buf, int scale);
 size_t get_sr_frame_buf_data_sz(Player *player);
 vpx_codec_err_t destory(Player *player);
+
+static const char *exec_name;

@@ -88,14 +88,6 @@
 #include "./vpx_config.h"
 #include "./common.h"
 
-static const char *exec_name;
-
-void usage_exit(void) {
-  fprintf(stderr, "Usage: %s <infile> <outfile> <sr infile> <scale> <skip>\n",
-          exec_name);
-  exit(EXIT_FAILURE);
-}
-
 int main(int argc, char **argv) {
   Player player;
   int frame_cnt = 0;

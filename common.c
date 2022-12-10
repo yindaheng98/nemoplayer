@@ -9,6 +9,12 @@
 
 static const char *const kIVFSignature = "DKIF";
 
+void usage_exit(void) {
+  fprintf(stderr, "Usage: %s <infile> <outfile> <sr infile> <scale> <skip>\n",
+          exec_name);
+  exit(EXIT_FAILURE);
+}
+
 VpxVideoReader *vpx_video_reader_open_stdin() {
   char header[32];
   VpxVideoReader *reader = NULL;
