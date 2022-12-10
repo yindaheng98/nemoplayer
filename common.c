@@ -70,10 +70,18 @@ vpx_codec_err_t init(Player *player, const VpxVideoInfo *info,
     error_codec(&player->codec, "Failed to initialize decoder.");
     return vpx_codec_dec_init_error;
   }
+  player->get_frame_iter = NULL;
   return VPX_CODEC_OK;
 };
 
 vpx_codec_err_t decode(Player *player, const uint8_t *data,
                        unsigned int data_sz, void *user_priv, long deadline) {
   return vpx_codec_decode(&player->codec, data, data_sz, user_priv, deadline);
+}
+
+vpx_image_t *get_frame(Player *player) {
+  vpx_image_t *img =
+      vpx_codec_get_frame(&player->codec, &player->get_frame_iter);
+  if (img == NULL) player->get_frame_iter = NULL;
+  return img;
 }

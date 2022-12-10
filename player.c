@@ -144,7 +144,7 @@ int main(int argc, char **argv) {
     if (decode(&player, frame, (unsigned int)frame_size, NULL, 0))
       die_codec(&codec, "Failed to decode frame.");
 
-    while ((img = vpx_codec_get_frame(&codec, &iter)) != NULL) {
+    while ((img = get_frame(&player)) != NULL) {
       vpx_img_write(img, outfile);
       fprintf(stderr, ".");
       ++frame_cnt;

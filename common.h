@@ -17,6 +17,7 @@ VpxVideoReader *vpx_video_reader_open_stdin();
 struct PlayerStruct {
   vpx_image_t sr_raw;
   vpx_codec_ctx_t codec;
+  vpx_codec_iter_t get_frame_iter;
 };
 
 typedef struct PlayerStruct Player;
@@ -25,3 +26,4 @@ vpx_codec_err_t init(Player *player, const VpxVideoInfo *info,
                      vpx_img_fmt_t img_fmt, int scale);
 vpx_codec_err_t decode(Player *player, const uint8_t *data,
                        unsigned int data_sz, void *user_priv, long deadline);
+vpx_image_t *get_frame(Player *player);
