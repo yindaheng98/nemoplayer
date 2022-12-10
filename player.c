@@ -105,7 +105,6 @@ int main(int argc, char **argv) {
   const VpxVideoInfo *info = NULL;
 
   FILE *sr_infile = NULL;
-  vpx_image_t raw;
   int scale;
   int skip;
 
@@ -127,18 +126,21 @@ int main(int argc, char **argv) {
   if (init(&player, info, VPX_IMG_FMT_I420, scale))
     die("Failed to initialize decoder.");
   codec = player.codec;
-  raw = player.sr_raw;
 
   skip = (int)strtol(argv[5], NULL, 0);
   while (vpx_video_reader_read_frame(reader)) {
-    vpx_codec_iter_t iter = NULL;
+    size_t sr_frame_buf_data_sz = get_sr_frame_buf_data_sz(&player);
+    unsigned char *sr_frame_buf = (unsigned char *)malloc(sr_frame_buf_data_sz);
     vpx_image_t *img = NULL;
     size_t frame_size = 0;
     const unsigned char *frame =
         vpx_video_reader_get_frame(reader, &frame_size);
-    if (vpx_img_read(&raw, sr_infile) && frame_cnt % skip == 0) {
+    if (fread(sr_frame_buf, 1, sr_frame_buf_data_sz, sr_infile) !=
+        sr_frame_buf_data_sz)
+      fprintf(stderr, "Failed to read super-resolution frame");
+    if (frame_cnt % skip == 0) {
       fprintf(stderr, "|->");
-      if (vpx_codec_set_sr_frame(&codec, &raw, scale))
+      if (set_sr_frame(&player, sr_frame_buf, scale))
         die_codec(&codec, "Failed to set super-resolution frame");
     }
     if (decode(&player, frame, (unsigned int)frame_size, NULL, 0))
