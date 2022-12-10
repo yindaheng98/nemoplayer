@@ -29,7 +29,7 @@ setup(
     version=__version__,
     author="yindaheng98",
     author_email="yindaheng98@gmail.com",
-    url="https://github.com/d-ion/player",
+    url="https://github.com/yindaheng98/nemoplayer",
     description="A test project using pybind11",
     long_description="",
     ext_modules=ext_modules,
