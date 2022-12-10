@@ -57,7 +57,7 @@ install: player.a player.so
 	cd build && make install
 
 pybind:
-	g++ -shared -fPIC `python3 -m pybind11 --includes` src/main.cpp -o nemoplayer`python3-config --extension-suffix` -lm -lvpx -lnemoplayer
+	cd build && g++ -shared -fPIC $(INCS) `python3 -m pybind11 --includes` ../src/main.cpp -o ../nemoplayer`python3-config --extension-suffix` -lm -lvpx -lnemoplayer
 
 player-clean:
 	rm -f common.c.o
