@@ -126,7 +126,7 @@ int main(int argc, char **argv) {
 
   init(&player, info, VPX_IMG_FMT_I420, scale);
   codec = player.codec;
-  raw = player.raw;
+  raw = player.sr_raw;
 
   skip = (int)strtol(argv[5], NULL, 0);
   while (vpx_video_reader_read_frame(reader)) {

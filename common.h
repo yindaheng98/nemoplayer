@@ -15,7 +15,7 @@ struct VpxVideoReaderStruct {
 VpxVideoReader *vpx_video_reader_open_stdin();
 
 struct PlayerStruct {
-  vpx_image_t raw;
+  vpx_image_t sr_raw;
   vpx_codec_ctx_t codec;
 };
 

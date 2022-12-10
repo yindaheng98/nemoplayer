@@ -47,7 +47,7 @@ void init(Player *player, const VpxVideoInfo *info, vpx_img_fmt_t img_fmt,
           int scale) {
   const VpxInterface *decoder = NULL;
 
-  if (!vpx_img_alloc(&player->raw, img_fmt, info->frame_width * scale,
+  if (!vpx_img_alloc(&player->sr_raw, img_fmt, info->frame_width * scale,
                      info->frame_height * scale, 1))
     error("Failed to allocate image.");
 
