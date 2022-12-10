@@ -41,10 +41,15 @@ player: deps
 	cd build && g++ -o ../$@  $(LDFILES) player.c.o $(LDFLAGS)
 
 player.a: deps
-	cd build && ar -crsv libnemoplayer.a $(LDFILES)
+	cd build && ar -crsv player.a $(LDFILES)
 
 player.so: deps
 	cd build && ../player.so.sh
+
+install: player.a player.so
+	cp -p build/player.a /usr/local/lib/libnemoplayer.a
+	cp -p player.pc /usr/local/lib/pkgconfig/player.pc
+	cd build && make install
 
 player-clean:
 	rm -f common.c.o
