@@ -1,0 +1,9 @@
+{ global:
+Player;
+init;
+decode;
+get_frame;
+set_sr_frame;
+get_sr_frame_buf_data_sz;
+destory;
+local: *; };

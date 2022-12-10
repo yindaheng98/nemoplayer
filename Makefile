@@ -47,9 +47,9 @@ SOFLAGS += -m64
 SOFLAGS += -g
 SOFLAGS += -Wl,--no-undefined
 SOFLAGS += -Wl,-soname,player.so.5
-SOFLAGS += -Wl,--version-script,libvpx.ver
+SOFLAGS += -Wl,--version-script,../player.ver
 player.so: deps
-	cd build && make libvpx.ver && g++ -shared $(SOFLAGS) -o player.so $(LDFILES) -lpthread -lm -lvpx
+	cd build && g++ -shared $(SOFLAGS) -o player.so $(LDFILES) -lpthread -lm -lvpx
 
 install: player.a player.so
 	cp -p build/player.a /usr/local/lib/libnemoplayer.a
