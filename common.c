@@ -72,3 +72,8 @@ vpx_codec_err_t init(Player *player, const VpxVideoInfo *info,
   }
   return VPX_CODEC_OK;
 };
+
+vpx_codec_err_t decode(Player *player, const uint8_t *data,
+                       unsigned int data_sz, void *user_priv, long deadline) {
+  return vpx_codec_decode(&player->codec, data, data_sz, user_priv, deadline);
+}

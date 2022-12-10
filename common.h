@@ -23,3 +23,5 @@ typedef struct PlayerStruct Player;
 
 vpx_codec_err_t init(Player *player, const VpxVideoInfo *info,
                      vpx_img_fmt_t img_fmt, int scale);
+vpx_codec_err_t decode(Player *player, const uint8_t *data,
+                       unsigned int data_sz, void *user_priv, long deadline);

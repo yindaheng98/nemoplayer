@@ -141,7 +141,7 @@ int main(int argc, char **argv) {
       if (vpx_codec_set_sr_frame(&codec, &raw, scale))
         die_codec(&codec, "Failed to set super-resolution frame");
     }
-    if (vpx_codec_decode(&codec, frame, (unsigned int)frame_size, NULL, 0))
+    if (decode(&player, frame, (unsigned int)frame_size, NULL, 0))
       die_codec(&codec, "Failed to decode frame.");
 
     while ((img = vpx_codec_get_frame(&codec, &iter)) != NULL) {
