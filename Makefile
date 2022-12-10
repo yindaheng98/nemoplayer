@@ -40,6 +40,9 @@ LDFILES += ../common.c.o
 player: deps
 	cd build && g++ -o ../$@  $(LDFILES) ../player.c.o $(LDFLAGS)
 
+player.so: deps
+	cd build && ../player.so.sh
+
 common-clean:
 	rm common.c.o
 player-clean: common-clean
