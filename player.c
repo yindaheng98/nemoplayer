@@ -97,7 +97,7 @@ void usage_exit(void) {
 }
 
 int main(int argc, char **argv) {
-  Player *player;
+  Player player;
   int frame_cnt = 0;
   FILE *outfile = NULL;
   vpx_codec_ctx_t codec;
@@ -124,10 +124,9 @@ int main(int argc, char **argv) {
 
   info = vpx_video_reader_get_info(reader);
 
-  player = (Player *)malloc(sizeof(Player));
-  init(player, info, VPX_IMG_FMT_I420, scale);
-  codec = player->codec;
-  raw = player->raw;
+  init(&player, info, VPX_IMG_FMT_I420, scale);
+  codec = player.codec;
+  raw = player.raw;
 
   skip = (int)strtol(argv[5], NULL, 0);
   while (vpx_video_reader_read_frame(reader)) {
