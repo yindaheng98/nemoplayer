@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "vpx/vpx_codec.h"
 #include "vpx/vpx_decoder.h"
 #include "vpx_ports/mem_ops.h"
 
@@ -43,20 +44,31 @@ void error_codec(vpx_codec_ctx_t *ctx, const char *s) {
   if (detail) fprintf("    %s\n", detail);
 };
 
-void init(Player *player, const VpxVideoInfo *info, vpx_img_fmt_t img_fmt,
-          int scale) {
+vpx_codec_err_t init(Player *player, const VpxVideoInfo *info,
+                     vpx_img_fmt_t img_fmt, int scale) {
   const VpxInterface *decoder = NULL;
+  vpx_codec_err_t vpx_codec_dec_init_error;
 
   if (!vpx_img_alloc(&player->sr_raw, img_fmt, info->frame_width * scale,
-                     info->frame_height * scale, 1))
+                     info->frame_height * scale, 1)) {
     error("Failed to allocate image.");
+    return VPX_CODEC_ERROR;
+  }
 
   decoder = get_vpx_decoder_by_fourcc(info->codec_fourcc);
-  if (!decoder) error("Unknown input codec.");
+  if (!decoder) {
+    error("Unknown input codec.");
+    return VPX_CODEC_ERROR;
+  }
 
   fprintf(stderr, "Using %s\n",
           vpx_codec_iface_name(decoder->codec_interface()));
 
-  if (vpx_codec_dec_init(&player->codec, decoder->codec_interface(), NULL, 0))
+  vpx_codec_dec_init_error =
+      vpx_codec_dec_init(&player->codec, decoder->codec_interface(), NULL, 0);
+  if (vpx_codec_dec_init_error) {
     error_codec(&player->codec, "Failed to initialize decoder.");
+    return vpx_codec_dec_init_error;
+  }
+  return VPX_CODEC_OK;
 };

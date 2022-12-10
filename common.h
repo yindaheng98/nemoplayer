@@ -21,5 +21,5 @@ struct PlayerStruct {
 
 typedef struct PlayerStruct Player;
 
-void init(Player *player, const VpxVideoInfo *info, vpx_img_fmt_t img_fmt,
-          int scale);
+vpx_codec_err_t init(Player *player, const VpxVideoInfo *info,
+                     vpx_img_fmt_t img_fmt, int scale);

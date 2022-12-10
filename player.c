@@ -124,7 +124,8 @@ int main(int argc, char **argv) {
 
   info = vpx_video_reader_get_info(reader);
 
-  init(&player, info, VPX_IMG_FMT_I420, scale);
+  if (init(&player, info, VPX_IMG_FMT_I420, scale))
+    die("Failed to initialize decoder.");
   codec = player.codec;
   raw = player.sr_raw;
 
