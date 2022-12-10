@@ -43,8 +43,13 @@ player: deps
 player.a: deps
 	cd build && ar -crsv player.a $(LDFILES)
 
+SOFLAGS += -m64
+SOFLAGS += -g
+SOFLAGS += -Wl,--no-undefined
+SOFLAGS += -Wl,-soname,player.so.5
+SOFLAGS += -Wl,--version-script,libvpx.ver
 player.so: deps
-	cd build && ../player.so.sh
+	cd build && make libvpx.ver && g++ -shared $(SOFLAGS) -o player.so $(LDFILES) -lpthread -lm -lvpx
 
 install: player.a player.so
 	cp -p build/player.a /usr/local/lib/libnemoplayer.a
