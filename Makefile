@@ -26,19 +26,19 @@ CXXFLAGS += -D_FILE_OFFSET_BITS=64
 CXXFLAGS += -Wall
 
 common.c.o:
-	cd build && gcc $(CXXFLAGS) $(INCS) -c -o ../$@ ../common.c
+	cd build && gcc $(CXXFLAGS) $(INCS) -c -o $@ ../common.c
 player.c.o:
-	cd build && gcc $(CXXFLAGS) $(INCS) -c -o ../$@ ../player.c
+	cd build && gcc $(CXXFLAGS) $(INCS) -c -o $@ ../player.c
 deps: common.c.o player.c.o vpx-deps
 
 LDFLAGS += -L. -lvpx -lm -lpthread
 LDFLAGS += -m64 -g
 
 LDFILES += $(DEPFILES)
-LDFILES += ../common.c.o
+LDFILES += common.c.o
 
 player: deps
-	cd build && g++ -o ../$@  $(LDFILES) ../player.c.o $(LDFLAGS)
+	cd build && g++ -o ../$@  $(LDFILES) player.c.o $(LDFLAGS)
 
 player.so: deps
 	cd build && ../player.so.sh

@@ -5,7 +5,6 @@ rm -rf build
     --enable-vp9 \
     --enable-libyuv \
     --target=x86_64-linux-gcc \
-    --enable-shared \
     --enable-debug \
     --log=yes \
     --enable-internal-stats \
