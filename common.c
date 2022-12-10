@@ -79,15 +79,44 @@ vpx_codec_err_t decode(Player *player, const uint8_t *data,
   return vpx_codec_decode(&player->codec, data, data_sz, user_priv, deadline);
 }
 
-vpx_image_t *get_frame(Player *player) {
-  vpx_image_t *img =
-      vpx_codec_get_frame(&player->codec, &player->get_frame_iter);
-  if (img == NULL) player->get_frame_iter = NULL;
-  return img;
+size_t img2buf(vpx_image_t *img, const unsigned char *buffer) {
+  int plane;
+  const unsigned char *buf_ = buffer;
+
+  for (plane = 0; plane < 3; ++plane) {
+    const unsigned char *buf = img->planes[plane];
+    const int stride = img->stride[plane];
+    const int w = vpx_img_plane_width(img, plane) *
+                  ((img->fmt & VPX_IMG_FMT_HIGHBITDEPTH) ? 2 : 1);
+    const int h = vpx_img_plane_height(img, plane);
+    int y;
+
+    for (y = 0; y < h; ++y) {
+      memcpy(buf_, buf, w);
+      buf += stride;
+      buf_ += w;
+    }
+  }
+  return (size_t)(buf_ - buffer);
 }
 
-void buf2img(unsigned char *buffer, vpx_image_t *img) {
+vpx_codec_err_t get_frame(Player *player, unsigned char *img_buf) {
+  vpx_image_t *img =
+      vpx_codec_get_frame(&player->codec, &player->get_frame_iter);
+  if (img == NULL) {
+    player->get_frame_iter = NULL;
+    return VPX_CODEC_LIST_END;
+  }
+  if (img2buf(img, img_buf) != get_sr_frame_buf_data_sz(player)) {
+    error("Cannot convert this img to buf");
+    return VPX_CODEC_MEM_ERROR;
+  }
+  return VPX_CODEC_OK;
+}
+
+size_t buf2img(unsigned char *buffer, vpx_image_t *img) {
   int plane;
+  const unsigned char *buf_ = buffer;
 
   for (plane = 0; plane < 3; ++plane) {
     unsigned char *buf = img->planes[plane];
@@ -98,16 +127,21 @@ void buf2img(unsigned char *buffer, vpx_image_t *img) {
     int y;
 
     for (y = 0; y < h; ++y) {
-      memcpy(buf, buffer, w);
+      memcpy(buf, buf_, w);
       buf += stride;
-      buffer += w;
+      buf_ += w;
     }
   }
+
+  return (size_t)(buf_ - buffer);
 }
 
 vpx_codec_err_t set_sr_frame(Player *player, unsigned char *img_buf,
                              int scale) {
-  buf2img(img_buf, &player->sr_raw);
+  if (buf2img(img_buf, &player->sr_raw) != get_sr_frame_buf_data_sz(player)) {
+    error("Cannot convert this buf to img");
+    return VPX_CODEC_MEM_ERROR;
+  }
   return vpx_codec_set_sr_frame(&player->codec, &player->sr_raw, scale);
 }
 

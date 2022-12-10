@@ -131,7 +131,7 @@ int main(int argc, char **argv) {
   while (vpx_video_reader_read_frame(reader)) {
     size_t sr_frame_buf_data_sz = get_sr_frame_buf_data_sz(&player);
     unsigned char *sr_frame_buf = (unsigned char *)malloc(sr_frame_buf_data_sz);
-    vpx_image_t *img = NULL;
+    unsigned char *rs_frame_buf = (unsigned char *)malloc(sr_frame_buf_data_sz);
     size_t frame_size = 0;
     const unsigned char *frame =
         vpx_video_reader_get_frame(reader, &frame_size);
@@ -146,8 +146,8 @@ int main(int argc, char **argv) {
     if (decode(&player, frame, (unsigned int)frame_size, NULL, 0))
       die_codec(&codec, "Failed to decode frame.");
 
-    while ((img = get_frame(&player)) != NULL) {
-      vpx_img_write(img, outfile);
+    while (get_frame(&player, rs_frame_buf) == VPX_CODEC_OK) {
+      fwrite(rs_frame_buf, 1, sr_frame_buf_data_sz, outfile);
       fprintf(stderr, ".");
       ++frame_cnt;
     }
