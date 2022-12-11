@@ -56,7 +56,7 @@ install: player.a player.so
 	cp -p player.pc /usr/local/lib/pkgconfig/player.pc
 	cd build && make install
 
-pybind:
+pybind: install
 	cd build && g++ -shared -fPIC $(INCS) `python3 -m pybind11 --includes` ../src/main.cpp -o ../nemoplayer`python3-config --extension-suffix` -lm -lvpx -lnemoplayer
 
 player-clean:
