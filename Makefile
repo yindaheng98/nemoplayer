@@ -1,3 +1,5 @@
+all:
+	cd build && make all
 libvpx.a:
 	cd build && make libvpx.a
 
