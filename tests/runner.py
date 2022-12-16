@@ -32,7 +32,7 @@ async def print_std(prefix, f):
 
 
 async def task_wrapper(device_id, task):
-    cmd = f"cd {root} && {task}"
+    cmd = f"cd {root} && export DEVICE={device_id} && {task}"
     proc = await asyncio.create_subprocess_exec(
         'sh', '-c', cmd,
         stdout=asyncio.subprocess.PIPE,
