@@ -72,4 +72,11 @@ frames_d = read_video_sequence_all(args.destin, width_d, height_d)
 logging.info(f"Destin frames shape: {frames_d.shape}")
 
 
-print(f"{123},{456}")
+def psnr(img1, img2):
+    dif = (img1 - img2) ** 2
+    mse = np.mean(dif.reshape(dif.shape[0], -1), axis=1)
+    psnr = 20 * np.log10(255.0 / np.sqrt(mse))
+    return psnr
+
+
+print(",".join([str(p) for p in psnr(frames_o, frames_d).tolist()]))
