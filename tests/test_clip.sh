@@ -24,8 +24,8 @@ $FFMPEG -i $ORIGIPATH -s $SIZEARG -vcodec rawvideo $RAWARG -vf select="between(n
 PLAYER="$(dirname $0)/../player"
 $FFMPEG -i $ORIGIPATH -vcodec rawvideo $RAWARG -vf "select=eq(n\,$START)" -vsync vfr pipe:1 |            # 原始视频所选起始帧转rawvideo作为高清低帧率输入
     $PLAYER $SMALLPATH - - $SCALE $FRAME |                                                               # player程序：从文件读低清高帧率视频；从stdin读高清低帧率视频；高清高帧率视频输出到stdout
-    ffmpeg -video_size $SIZEARG $RAWARG -i pipe:0 -v quiet -c:v libx264 -preset slow -qp 0 -y $DSTINPATH # 编码为MP4写入文件，方便看
+    ffmpeg -video_size "${width}x${height}" $RAWARG -i pipe:0 -v quiet -c:v libx264 -preset slow -qp 0 -y $DSTINPATH # 编码为MP4写入文件，方便看
 
 PSNR="$(dirname $0)/psnr.py"
-RESULT=$(PYTHONPATH=$(dirname $0) python3 $PSNR --origin $ORIGIPATH --destin $DSTINPATH --start $START --end $END)
+RESULT=$(PYTHONPATH=$(dirname $0) python3 $PSNR --origin $ORIGIPATH --destin $DSTINPATH --start $START --frame $FRAME)
 echo "$(basename $ORIGIPATH),$START,$RESULT" >>results_$DEVICE.csv
