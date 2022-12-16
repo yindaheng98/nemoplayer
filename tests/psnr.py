@@ -41,7 +41,7 @@ assert width_o == width_d and height_o == height_d and args.frame == n_frames_d 
 def read_video_sequence(path: str, start: int, frame: int, width: int, height: int, pix_fmt='bgr24'):
     path = os.path.expanduser(path)
     process = (ffmpeg
-               .input(path)
+               .input(path, loglevel="error")
                .trim(start_frame=start, end_frame=start+frame)
                .setpts('PTS-STARTPTS')
                .output('pipe:', format='rawvideo', pix_fmt=pix_fmt)
@@ -54,6 +54,22 @@ def read_video_sequence(path: str, start: int, frame: int, width: int, height: i
 
 frames_o = read_video_sequence(args.origin, args.start, args.frame, width_o, height_o)
 logging.info(f"Origin frames shape: {frames_o.shape}")
+
+
+def read_video_sequence_all(path: str, width: int, height: int, pix_fmt='bgr24'):
+    path = os.path.expanduser(path)
+    process = (ffmpeg
+               .input(path, loglevel="error")
+               .output('pipe:', format='rawvideo', pix_fmt=pix_fmt)
+               .run_async(pipe_stdout=True, pipe_stderr=False))
+    out, err = process.communicate()
+    if err:
+        raise err
+    return np.frombuffer(out, np.uint8).reshape([-1, height, width, 3])
+
+
+frames_d = read_video_sequence_all(args.destin, width_d, height_d)
+logging.info(f"Destin frames shape: {frames_d.shape}")
 
 
 print(f"{123},{456}")
