@@ -32,3 +32,6 @@ echo "$(basename $ORIGIPATH),$START,$PSNR" >>psnr_$DEVICE.csv
 SSIMRUN="$(dirname $0)/ssim.py"
 SSIM=$(PYTHONPATH=$(dirname $0) python3 $SSIMRUN --origin $ORIGIPATH --destin $DSTINPATH --start $START --frame $FRAME)
 echo "$(basename $ORIGIPATH),$START,$SSIM" >>ssim_$DEVICE.csv
+
+rm $SMALLPATH
+rm $DSTINPATH
