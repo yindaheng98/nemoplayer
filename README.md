@@ -20,8 +20,17 @@ FRAMES=600
 ./player-test.sh $VIDEOROOT/4K.webm $VIDEOROOT/540p-small.ivf $VIDEOROOT/4K-small-nemo-$SCALE-$SKIP.mp4 $SCALE $SKIP $FROM $FRAMES
 ```
 
-## Build .so
+## Build .so and .a
 
 ```sh
 make player.so
+make player.a
+```
+
+## Test quality
+
+```sh
+export DRYRUN=1
+./tests/test_dataset.sh ~/datasets/ugc/youtube ~/datasets/ugc/tests ~/datasets/ugc/tests 4 16 > ./tasks.sh
+python3 ./tests/runner.py --tasks ./tasks.sh
 ```
