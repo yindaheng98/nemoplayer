@@ -1,0 +1,61 @@
+import argparse
+import logging
+import ffmpeg
+import os
+import numpy as np
+import cv2
+
+logging.basicConfig(level=logging.INFO)
+
+parser = argparse.ArgumentParser()
+parser.add_argument('--origin', type=str, required=True, help='Origin video path')
+parser.add_argument('--destin', type=str, required=True, help='Proceeded video path')
+parser.add_argument('--start', type=int, required=True, help='Start frame index')
+parser.add_argument('--frame', type=int, required=True, help='Number of frames')
+
+
+def parse_args():
+    args = parser.parse_args()
+    logging.info({
+        '--origin': args.origin,
+        '--destin': args.destin,
+        '--start': args.start,
+        '--frame': args.frame,
+    })
+    return args
+
+
+def read_video_meta(path: str):
+    path = os.path.expanduser(path)
+    capture = cv2.VideoCapture(path)
+    n_frames = int(capture.get(cv2.CAP_PROP_FRAME_COUNT))
+    width = int(capture.get(cv2.CAP_PROP_FRAME_WIDTH))
+    height = int(capture.get(cv2.CAP_PROP_FRAME_HEIGHT))
+    capture.release()
+    return width, height, n_frames
+
+
+def read_video_sequence(path: str, start: int, frame: int, width: int, height: int, pix_fmt='bgr24'):
+    path = os.path.expanduser(path)
+    process = (ffmpeg
+               .input(path, loglevel="error")
+               .trim(start_frame=start, end_frame=start+frame)
+               .setpts('PTS-STARTPTS')
+               .output('pipe:', format='rawvideo', pix_fmt=pix_fmt)
+               .run_async(pipe_stdout=True, pipe_stderr=False))
+    out, err = process.communicate()
+    if err:
+        raise err
+    return np.frombuffer(out, np.uint8).reshape([-1, height, width, 3])
+
+
+def read_video_sequence_all(path: str, width: int, height: int, pix_fmt='bgr24'):
+    path = os.path.expanduser(path)
+    process = (ffmpeg
+               .input(path, loglevel="error")
+               .output('pipe:', format='rawvideo', pix_fmt=pix_fmt)
+               .run_async(pipe_stdout=True, pipe_stderr=False))
+    out, err = process.communicate()
+    if err:
+        raise err
+    return np.frombuffer(out, np.uint8).reshape([-1, height, width, 3])
