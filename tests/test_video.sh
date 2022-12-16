@@ -9,6 +9,9 @@ FRAME=$5    # 帧序列长度
 eval $(ffprobe -v error -select_streams v:0 -count_frames -show_entries stream=nb_read_frames -of default=nw=1 $ORIGIPATH) # 获取原始视频帧数
 MAXSTART=$(($nb_read_frames - $FRAME))
 TESTCLIP="$(dirname $0)/test_clip.sh"
+if [ $DRYRUN ]; then
+    TESTCLIP="echo $TESTCLIP"
+fi
 for ((START = 0; START < $MAXSTART; START++)); do
     SMALLPATH="$SMALLDIR/$(basename $ORIGIPATH)"
     DSTINPATH="$SMALLPATH"
