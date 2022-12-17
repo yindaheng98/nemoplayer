@@ -40,6 +40,10 @@ echo "$(basename $ORIGIPATH),$START,$SIZE" >>size_$DEVICE.csv
 PSNRbRUN="$(dirname $0)/psnr_bicubic.py"
 PSNRb=$(PYTHONPATH=$(dirname $0) python3 $PSNRbRUN --origin $ORIGIPATH --destin $SMALLPATH --start $START --frame $FRAME --scale $SCALE)
 echo "$(basename $ORIGIPATH),$START,$PSNRb" >>psnr_b_$DEVICE.csv
+SSIMbRUN="$(dirname $0)/ssim_bicubic.py"
+SSIMb=$(PYTHONPATH=$(dirname $0) python3 $SSIMbRUN --origin $ORIGIPATH --destin $SMALLPATH --start $START --frame $FRAME --scale $SCALE)
+echo "$(basename $ORIGIPATH),$START,$SSIMb" >>ssim_b_$DEVICE.csv
+
 
 rm $SMALLPATH
 rm $DSTINPATH
