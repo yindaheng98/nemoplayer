@@ -10,7 +10,7 @@ frames_o, frames_d = read_videos(parse_args())
 
 
 def psnr(frames1, frames2):
-    return [peak_signal_noise_ratio(frames1[i, ...], frames2[i, ...]) for i in range(frames_d.shape[0])]
+    return [peak_signal_noise_ratio(frames1[i, ...], frames2[i, ...]) for i in range(frames2.shape[0])]
 
 
 print(",".join([str(p) for p in psnr(frames_o, frames_d)]))
