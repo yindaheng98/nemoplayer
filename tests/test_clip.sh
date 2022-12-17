@@ -37,5 +37,9 @@ SIZERUN="$(dirname $0)/size.py"
 SIZE=$(PYTHONPATH=$(dirname $0) python3 $SIZERUN --video $SMALLPATH --frame $FRAME)
 echo "$(basename $ORIGIPATH),$START,$SIZE" >>size_$DEVICE.csv
 
+PSNRbRUN="$(dirname $0)/psnr_bicubic.py"
+PSNRb=$(PYTHONPATH=$(dirname $0) python3 $PSNRbRUN --origin $ORIGIPATH --destin $SMALLPATH --start $START --frame $FRAME --scale $SCALE)
+echo "$(basename $ORIGIPATH),$START,$PSNRb" >>psnr_b_$DEVICE.csv
+
 rm $SMALLPATH
 rm $DSTINPATH
