@@ -8,6 +8,7 @@ import cv2
 logging.basicConfig(level=logging.INFO)
 
 parser = argparse.ArgumentParser()
+parser.add_argument('--name', type=str, required=True, help='Name of the video')
 parser.add_argument('--origin', type=str, required=True, help='Origin video path')
 parser.add_argument('--destin', type=str, required=True, help='Proceeded video path')
 parser.add_argument('--small', type=str, required=True, help='Small video path')
@@ -20,6 +21,7 @@ parser.add_argument('--datadir', type=str, required=True, help='Dir for data')
 def parse_args():
     args = parser.parse_args()
     logging.info({
+        '--name': args.name,
         '--origin': args.origin,
         '--destin': args.destin,
         '--small': args.small,
@@ -96,4 +98,4 @@ def data_append(args, name, data):
     assert len(data) == args.frame
     path = os.path.join(args.datadir, name + ".csv")
     with open(path, "a+", encoding='utf8') as f:
-        f.write(f"{args.origin},{args.start},{','.join(str(d) for d in data)}")
+        f.write(f"{args.name},{args.start},{','.join(str(d) for d in data)}\n")

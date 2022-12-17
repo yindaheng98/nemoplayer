@@ -29,7 +29,7 @@ $FFMPEG -i $ORIGIPATH -vcodec rawvideo $RAWARG -vf "select=eq(n\,$START)" -vsync
 DATADIR=$(dirname $0)/data/$DEVICE
 mkdir -p $DATADIR
 QRUN="$(dirname $0)/quality.py"
-PYTHONPATH=$(dirname $0) python3 $QRUN --origin $ORIGIPATH --destin $DSTINPATH --small $SMALLPATH --start $START --frame $FRAME --scale $SCALE --datadir $DATADIR
+PYTHONPATH=$(dirname $0) python3 $QRUN --name $(basename $ORIGIPATH) --origin $ORIGIPATH --destin $DSTINPATH --small $SMALLPATH --start $START --frame $FRAME --scale $SCALE --datadir $DATADIR
 
 rm $SMALLPATH
 rm $DSTINPATH

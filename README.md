@@ -33,6 +33,11 @@ make player.a
 export DRYRUN=1
 ./tests/test_dataset.sh ~/datasets/ugc/youtube ~/datasets/ugc/tests ~/datasets/ugc/tests 4 16 > ./tasks.sh
 python3 ./tests/runner.py --tasks ./tasks.sh
+```
+
+## Gather data
+
+```sh
 ./tests/test_clip_headers.sh 16 > psnr.csv
 cat ./tests/data/*/psnr.csv >> psnr.csv
 ./tests/test_clip_headers.sh 16 > ssim.csv
