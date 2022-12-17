@@ -49,5 +49,5 @@ cat size_*.csv >> size.csv
 
 ```sh
 python3 ./tests/draw.py psnr.csv
-python3 ./tests/draw.py size.csv
+python3 ./tests/draw_size.py size.csv
 ```
