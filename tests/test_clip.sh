@@ -26,24 +26,10 @@ $FFMPEG -i $ORIGIPATH -vcodec rawvideo $RAWARG -vf "select=eq(n\,$START)" -vsync
     $PLAYER $SMALLPATH - - $SCALE $FRAME |                                                                           # player程序：从文件读低清高帧率视频；从stdin读高清低帧率视频；高清高帧率视频输出到stdout
     ffmpeg -video_size "${width}x${height}" $RAWARG -i pipe:0 -v quiet -c:v libx264 -preset slow -qp 0 -y $DSTINPATH # 编码为MP4写入文件，方便看
 
-PSNRRUN="$(dirname $0)/psnr.py"
-PSNR=$(PYTHONPATH=$(dirname $0) python3 $PSNRRUN --origin $ORIGIPATH --destin $DSTINPATH --start $START --frame $FRAME)
-echo "$(basename $ORIGIPATH),$START,$PSNR" >>psnr_$DEVICE.csv
-SSIMRUN="$(dirname $0)/ssim.py"
-SSIM=$(PYTHONPATH=$(dirname $0) python3 $SSIMRUN --origin $ORIGIPATH --destin $DSTINPATH --start $START --frame $FRAME)
-echo "$(basename $ORIGIPATH),$START,$SSIM" >>ssim_$DEVICE.csv
-
-SIZERUN="$(dirname $0)/size.py"
-SIZE=$(PYTHONPATH=$(dirname $0) python3 $SIZERUN --video $SMALLPATH --frame $FRAME)
-echo "$(basename $ORIGIPATH),$START,$SIZE" >>size_$DEVICE.csv
-
-PSNRbRUN="$(dirname $0)/psnr_bicubic.py"
-PSNRb=$(PYTHONPATH=$(dirname $0) python3 $PSNRbRUN --origin $ORIGIPATH --destin $SMALLPATH --start $START --frame $FRAME --scale $SCALE)
-echo "$(basename $ORIGIPATH),$START,$PSNRb" >>psnr_b_$DEVICE.csv
-SSIMbRUN="$(dirname $0)/ssim_bicubic.py"
-SSIMb=$(PYTHONPATH=$(dirname $0) python3 $SSIMbRUN --origin $ORIGIPATH --destin $SMALLPATH --start $START --frame $FRAME --scale $SCALE)
-echo "$(basename $ORIGIPATH),$START,$SSIMb" >>ssim_b_$DEVICE.csv
-
+DATADIR=$(dirname $0)/data/$DEVICE
+mkdir -p $DATADIR
+QRUN="$(dirname $0)/quality.py"
+PYTHONPATH=$(dirname $0) python3 $QRUN --origin $ORIGIPATH --destin $DSTINPATH --small $SMALLPATH --start $START --frame $FRAME --scale $SCALE --datadir $DATADIR
 
 rm $SMALLPATH
 rm $DSTINPATH

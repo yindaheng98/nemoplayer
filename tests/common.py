@@ -10,8 +10,11 @@ logging.basicConfig(level=logging.INFO)
 parser = argparse.ArgumentParser()
 parser.add_argument('--origin', type=str, required=True, help='Origin video path')
 parser.add_argument('--destin', type=str, required=True, help='Proceeded video path')
+parser.add_argument('--small', type=str, required=True, help='Small video path')
 parser.add_argument('--start', type=int, required=True, help='Start frame index')
 parser.add_argument('--frame', type=int, required=True, help='Number of frames')
+parser.add_argument('--scale', type=int, required=True, help='Scale for bicubic')
+parser.add_argument('--datadir', type=str, required=True, help='Dir for data')
 
 
 def parse_args():
@@ -19,8 +22,11 @@ def parse_args():
     logging.info({
         '--origin': args.origin,
         '--destin': args.destin,
+        '--small': args.small,
         '--start': args.start,
         '--frame': args.frame,
+        '--scale': args.scale,
+        '--datadir': args.datadir,
     })
     return args
 
@@ -75,4 +81,19 @@ def read_videos(args):
     frames_d = read_video_sequence_all(args.destin, width_d, height_d)
     logging.info(f"Destin frames shape: {frames_d.shape}")
 
-    return frames_o, frames_d
+    frames_s = read_video_sequence_all(args.small, width_d // args.scale, height_d // args.scale)
+    logging.info(f"Destin frames shape: {frames_s.shape}")
+
+    frames_b = np.stack([
+        cv2.resize(frames_s[i, ...], dsize=(0, 0), fx=args.scale, fy=args.scale, interpolation=cv2.INTER_CUBIC) for i in range(frames_s.shape[0])
+    ])
+    logging.info(f"Bicubi frames shape: {frames_b.shape}")
+
+    return frames_o, frames_d, frames_s, frames_b
+
+
+def data_append(args, name, data):
+    assert len(data) == args.frame
+    path = os.path.join(args.datadir, name + ".csv")
+    with open(path, "a+", encoding='utf8') as f:
+        f.write(f"{args.origin},{args.start},{','.join(str(d) for d in data)}")
