@@ -37,10 +37,17 @@ python3 ./tests/runner.py --tasks ./tasks.sh
 cat psnr_*.csv >> psnr.csv
 ./tests/test_clip_headers.sh 16 > ssim.csv
 cat ssim_*.csv >> ssim.csv
+./tests/test_clip_headers.sh 16 > psnr_b.csv
+cat psnr_b_*.csv >> psnr_b.csv
+./tests/test_clip_headers.sh 16 > ssim_b.csv
+cat ssim_b_*.csv >> ssim_b.csv
+./tests/test_clip_headers.sh 16 > size.csv
+cat size_*.csv >> size.csv
 ```
 
 ## Draw quality
 
 ```sh
 python3 ./tests/draw.py psnr.csv
+python3 ./tests/draw.py size.csv
 ```
