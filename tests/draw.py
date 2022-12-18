@@ -20,5 +20,5 @@ for video in data["video"].drop_duplicates():
         clip_x = [start + j for j in range(1, frame+1)]
         clip_y = [clip_data[str(j)] for j in range(1, frame+1)]
         ax.plot(clip_x, clip_y, color="royalblue", linewidth=0.5)
-    fig.savefig(os.path.join(savedir, os.path.basename(path)+video+".png"))
+    fig.savefig(os.path.join(savedir, video+"."+os.path.basename(path)+".png"))
     plt.close(fig)
