@@ -26,6 +26,6 @@ for video in data["video"].drop_duplicates():
         kframe_y.append(clip_data[str(0)])
     kframe_sort = np.argsort(kframe_x)
     kframe_x, kframe_y = np.array(kframe_x)[kframe_sort], np.array(kframe_y)[kframe_sort]
-    ax.plot(kframe_x, kframe_y, color="midnightblue", linewidth=0.5)
+    ax.plot(kframe_x, kframe_y, color="lightcoral", linewidth=0.5)
     fig.savefig(os.path.join(savedir, video+"."+os.path.basename(path)+".png"))
     plt.close(fig)
