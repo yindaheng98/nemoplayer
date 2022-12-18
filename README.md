@@ -55,7 +55,9 @@ cat ./tests/data/*/size.csv >> size.csv
 ```sh
 python3 ./tests/draw.py psnr.csv
 python3 ./tests/draw.py psnr_b.csv
+python3 ./tests/draw_compare.py psnr.csv psnr_b.csv
 python3 ./tests/draw.py ssim.csv
 python3 ./tests/draw.py ssim_b.csv
+python3 ./tests/draw_compare.py ssim.csv ssim_b.csv
 python3 ./tests/draw_size.py size.csv
 ```
