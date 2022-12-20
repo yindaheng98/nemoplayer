@@ -14,6 +14,9 @@ if __name__ == "__main__":
     print("Reading:", path1)
     data1 = pd.read_csv(path1)
     print(data1)
+    minimum = int(sys.argv[3])
+    maximum = int(sys.argv[4])
+    print("Range:", [minimum, maximum])
 
     for video in (set(data0["video"].drop_duplicates()) & set(data1["video"].drop_duplicates())):
         video_data0 = data0[data0["video"] == video]
@@ -23,5 +26,6 @@ if __name__ == "__main__":
         fig, ax = plt.subplots(figsize=(12, 6))
         draw(ax, video_data0, color="royalblue", linewidth=0.5)
         draw(ax, video_data1, color="lightcoral", linewidth=0.5)
+        plt.ylim(minimum, maximum)
         fig.savefig(os.path.join(savedir, f"{video}.{os.path.basename(path0)}.{os.path.basename(path1)}.png"))
         plt.close(fig)

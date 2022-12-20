@@ -54,8 +54,8 @@ cat ./tests/data/*/size.csv >> size.csv
 
 ```sh
 cat > ./draw.sh <<EOF
-python3 ./tests/draw_compare.py psnr.csv psnr_b.csv
-python3 ./tests/draw_compare.py ssim.csv ssim_b.csv
+python3 ./tests/draw_compare.py psnr.csv psnr_b.csv 0 100
+python3 ./tests/draw_compare.py ssim.csv ssim_b.csv 0 1
 python3 ./tests/draw_size.py size.csv
 EOF
 python3 ./tests/runner.py --devices '1,2,3' --tasks ./draw.sh
