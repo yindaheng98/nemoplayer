@@ -54,15 +54,18 @@ cat ./tests/data/*/psnr_b.csv >> psnr_b.csv
 cat ./tests/data/*/ssim_b.csv >> ssim_b.csv
 ./tests/test_clip_headers.sh 16 > size.csv
 cat ./tests/data/*/size.csv >> size.csv
+cat ./tests/data/*/size_full.csv > size_full.csv
 ```
 
 ## Draw quality
 
 ```sh
+rm tests/figures/*.size.csv.png
+rm tests/figures/*.size.csv.log_yscale.png
 cat > ./draw.sh <<EOF
 python3 ./tests/draw_compare.py psnr.csv psnr_b.csv 0 100
 python3 ./tests/draw_compare.py ssim.csv ssim_b.csv 0 1
-python3 ./tests/draw_size.py size.csv
+python3 ./tests/draw_size.py size.csv size_full.csv
 EOF
 python3 ./tests/runner.py --devices '1,2,3' --tasks ./draw.sh
 rm ./draw.sh
