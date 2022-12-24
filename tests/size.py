@@ -19,6 +19,11 @@ logging.info({
 })
 
 probe = ffmpeg.probe(args.small, show_frames=None)
-path = os.path.join(args.datadir, "size_full.csv")
-with open(path, "a+", encoding='utf8') as f:
+
+sz_path = os.path.join(args.datadir, "size_full.csv")
+with open(sz_path, "a+", encoding='utf8') as f:
     f.write(f"{args.name},{','.join(str(frame['pkt_size']) for frame in probe['frames'])}\n")
+    
+kf_path = os.path.join(args.datadir, "keyframe_full.csv")
+with open(kf_path, "a+", encoding='utf8') as f:
+    f.write(f"{args.name},{','.join(str(frame['key_frame']) for frame in probe['frames'])}\n")
