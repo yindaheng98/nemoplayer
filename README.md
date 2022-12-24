@@ -30,9 +30,15 @@ make player.a
 ## Test quality
 
 ```sh
-export DRYRUN=1
-./tests/test_dataset.sh ~/datasets/ugc/youtube ~/datasets/ugc/tests ~/datasets/ugc/tests 4 16 > ./tasks.sh
-python3 ./tests/runner.py --tasks ./tasks.sh
+DRYRUN=1 ./tests/test_dataset.sh ~/datasets/ugc/youtube ~/datasets/ugc/tests ~/datasets/ugc/tests 4 16 > ./tasks_quality.sh
+python3 ./tests/runner.py --tasks ./tasks_quality.sh
+```
+
+## Test size
+
+```sh
+DRYRUN=1 ./tests/test_dataset_size.sh ~/datasets/ugc/youtube ~/datasets/ugc/tests 4 > ./tasks_size.sh
+python3 ./tests/runner.py --tasks ./tasks_size.sh
 ```
 
 ## Gather data
