@@ -18,8 +18,12 @@ ENCODER="$(dirname $0)/../build/vpxenc"
 FFMPEG="ffmpeg -v quiet -y"
 RAWARG="-f rawvideo -pix_fmt yuv420p"
 END=$(($START + $FRAME - 1))
-$FFMPEG -i $ORIGIPATH -s $SIZEARG -vcodec rawvideo $RAWARG -vf select="between(n\,$START\,$END),setpts=PTS-STARTPTS" -vsync vfr pipe:1 | # 原始视频缩放后转rawvideo
-    $ENCODER --ivf --passes=1 -w $small_width -h $small_height -o $SMALLPATH -                                                           # 输入给vpxenc编码为IVF文件
+
+function down_scale() {
+    $FFMPEG -i $ORIGIPATH -s $SIZEARG -vcodec rawvideo $RAWARG -vf select="between(n\,$1\,$2),setpts=PTS-STARTPTS" -vsync vfr pipe:1 | # 原始视频缩放后转rawvideo
+        $ENCODER --ivf --passes=1 -w $small_width -h $small_height -o $3 -                                                             # 输入给vpxenc编码为IVF文件
+}
+down_scale $START $END $SMALLPATH # 生成原始视频缩放后IVF文件
 
 PLAYER="$(dirname $0)/../player"
 HQVIDEO="$FFMPEG -i $ORIGIPATH -vcodec rawvideo $RAWARG -vf select=eq(n\,$START) -vsync vfr pipe:1" # 原始视频所选起始帧转rawvideo作为高清低帧率输入
