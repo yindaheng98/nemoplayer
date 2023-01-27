@@ -7,6 +7,7 @@ from queue import Queue, Empty
 parser = argparse.ArgumentParser()
 parser.add_argument('--tasks', type=str, default='tasks.sh', help='Task list')
 parser.add_argument('--devices', type=str, default=",".join(list(str(i) for i in range(1, 129))), help='Devices to use')
+parser.add_argument('--preprocess', type=str, default="pwd", help='Some preprocess command here (e.g. set environment variables)')
 args = parser.parse_args()
 root = os.path.dirname(os.path.abspath(args.tasks))
 
@@ -31,8 +32,8 @@ async def print_std(prefix, f):
         print(f"{time.strftime('%Y-%m-%d %X', time.localtime())} {prefix} | {line.strip().decode('utf8')}")
 
 
-async def task_wrapper(device_id, task):
-    cmd = f"cd {root} && export DEVICE={device_id} && {task}"
+async def task_wrapper(device_id, task, preprocess):
+    cmd = f"cd {root} && {preprocess} && export DEVICE={device_id} && {task}"
     proc = await asyncio.create_subprocess_exec(
         'sh', '-c', cmd,
         stdout=asyncio.subprocess.PIPE,
@@ -48,11 +49,11 @@ async def task_wrapper(device_id, task):
 failed_tasks = []
 
 
-async def runner(device_id, task_queue: Queue):
+async def runner(device_id, task_queue: Queue, preprocess):
     while True:
         try:
             task = task_queue.get_nowait()
-            return_code = await task_wrapper(device_id, task)
+            return_code = await task_wrapper(device_id, task, preprocess)
             if return_code != 0:
                 failed_tasks.append(task)
             task_queue.task_done()
@@ -71,7 +72,7 @@ async def main():
             pass
     print(device_list)
     for device_id in device_list:
-        runners.append(runner(device_id, task_queue))
+        runners.append(runner(device_id, task_queue, args.preprocess))
     await asyncio.gather(*runners)
     for task in failed_tasks:
         print(f"failed | {task}")

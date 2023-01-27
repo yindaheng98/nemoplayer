@@ -34,6 +34,21 @@ DRYRUN=1 ./tests/test_dataset.sh ~/datasets/ugc/youtube ~/datasets/ugc/tests ~/d
 python3 ./tests/runner.py --tasks ./tasks_quality.sh
 ```
 
+## Test quality with ingetrated upscale program
+
+```sh
+DRYRUN=1 ./tests/test_dataset.sh ~/datasets/ugc/youtube ~/datasets/ugc/tests ~/datasets/ugc/tests 4 16 > ./tasks_quality.sh
+python3 ./tests/runner.py --tasks ./tasks_quality.sh --preprocess "export INTEGRATION='python /path/to/upscale/script.py'"
+```
+
+Then your INTEGRATION would be call linke this:
+
+```sh
+python /path/to/upscale/script.py /path/to/low/resolution/video.mp4 | some other operation
+```
+
+Your `/path/to/upscale/script.py` should read the `/path/to/low/resolution/video.mp4`, upscale the first frame, and pipe the high resolution frame to `stdout`.
+
 ## Test size
 
 ```sh
