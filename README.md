@@ -49,6 +49,12 @@ python /path/to/upscale/script.py /path/to/low/resolution/video.mp4 | some other
 
 Your `/path/to/upscale/script.py` should read the `/path/to/low/resolution/video.mp4`, upscale the first frame, and pipe the high resolution frame to `stdout`.
 
+For example:
+
+```sh
+python3 ./tests/runner.py --devices 1 --tasks ./tasks_quality_test.sh --preprocess "export INTEGRATION='source /home/seu/FrogSR/venv/bin/activate && PYTHONPATH=/home/seu/FrogSR python /home/seu/FrogSR/vrt_server_cli.py --port 8080 --path'"
+```
+
 ## Test size
 
 ```sh
