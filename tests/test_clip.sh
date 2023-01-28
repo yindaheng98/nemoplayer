@@ -26,7 +26,7 @@ function down_scale() {
 down_scale $START $END $SMALLPATH # 生成原始视频缩放后IVF文件
 
 PLAYER="$(dirname $0)/../player"
-HQVIDEO="$FFMPEG -i $ORIGIPATH -vcodec rawvideo $RAWARG -vf select=eq(n\,$START) -vsync vfr pipe:1" # 原始视频所选起始帧转rawvideo作为高清低帧率输入
+HQVIDEO="$FFMPEG -i $ORIGIPATH -vcodec rawvideo $RAWARG -vf select='eq(n\,$START)' -vsync vfr pipe:1" # 原始视频所选起始帧转rawvideo作为高清低帧率输入
 SMALLPATH_INT=$SMALLPATH.for_integration.ivf
 if [ "$INTEGRATION" ]; then
     START_INT=$(($START - $FRAME + 1)) # 往前取FRAME帧用于计算
@@ -36,7 +36,7 @@ if [ "$INTEGRATION" ]; then
     down_scale $START_INT $START $SMALLPATH_INT # 生成原始视频缩放后IVF文件
     HQVIDEO="$INTEGRATION $SMALLPATH_INT"       # 用INTEGRATION指定如何生成高清低帧率输入
 fi
-$HQVIDEO |                                                                                                           # 总之来一个高清低帧率输入
+sh -c "$HQVIDEO" |                                                                                                           # 总之来一个高清低帧率输入
     $PLAYER $SMALLPATH - - $SCALE $FRAME |                                                                           # player程序：从文件读低清高帧率视频；从stdin读高清低帧率视频；高清高帧率视频输出到stdout
     ffmpeg -video_size "${width}x${height}" $RAWARG -i pipe:0 -v quiet -c:v libx264 -preset slow -qp 0 -y $DSTINPATH # 编码为MP4写入文件，方便看
 rm $SMALLPATH_INT
