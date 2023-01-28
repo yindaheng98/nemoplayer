@@ -52,7 +52,7 @@ Your `/path/to/upscale/script.py` should read the `/path/to/low/resolution/video
 For example:
 
 ```sh
-python3 ./tests/runner.py --devices 1 --tasks ./tasks_quality_test.sh --preprocess "export INTEGRATION='source /home/seu/FrogSR/venv/bin/activate && PYTHONPATH=/home/seu/FrogSR python /home/seu/FrogSR/vrt_server_cli.py --port 8080 --path'"
+source /home/seu/FrogSR/venv/bin/activate && python3 ./tests/runner.py --devices 1 --tasks ./tasks_quality_test.sh --preprocess "export INTEGRATION='source /home/seu/FrogSR/venv/bin/activate && PYTHONPATH=/home/seu/FrogSR python /home/seu/FrogSR/vrt_server_cli.py --port 8000 --path'"
 ```
 
 ## Test size
