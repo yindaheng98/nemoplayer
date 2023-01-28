@@ -31,12 +31,13 @@ SMALLPATH_INT=$SMALLPATH.for_integration.ivf
 if [ "$INTEGRATION" ]; then
     START_INT=$(($START - $FRAME + 1)) # 往前取FRAME帧用于计算
     if [ $START_INT -lt 0 ]; then
+        rm $SMALLPATH
         exit 0
     fi
     down_scale $START_INT $START $SMALLPATH_INT # 生成原始视频缩放后IVF文件
     HQVIDEO="$INTEGRATION $SMALLPATH_INT"       # 用INTEGRATION指定如何生成高清低帧率输入
 fi
-sh -c "$HQVIDEO" |                                                                                                           # 总之来一个高清低帧率输入
+sh -c "$HQVIDEO" |                                                                                                   # 总之来一个高清低帧率输入
     $PLAYER $SMALLPATH - - $SCALE $FRAME |                                                                           # player程序：从文件读低清高帧率视频；从stdin读高清低帧率视频；高清高帧率视频输出到stdout
     ffmpeg -video_size "${width}x${height}" $RAWARG -i pipe:0 -v quiet -c:v libx264 -preset slow -qp 0 -y $DSTINPATH # 编码为MP4写入文件，方便看
 rm $SMALLPATH_INT
