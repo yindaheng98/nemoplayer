@@ -6,8 +6,8 @@ DSTINDIR=$3 # 缩放后视频经nemo还原的视频文件夹路径（写入）
 SCALE=$4    # 缩放倍率
 FRAME=$5    # 帧序列长度
 
-eval $(ffprobe -v error -select_streams v:0 -count_frames -show_entries stream=nb_read_frames -of default=nw=1 $ORIGIPATH) # 获取原始视频帧数
-MAXSTART=$(($nb_read_frames - $FRAME))
+eval $(ffprobe -v error -select_streams v:0 -count_packets -show_entries stream=nb_read_packets -of default=nw=1 $ORIGIPATH) # 获取原始视频帧数
+MAXSTART=$(($nb_read_packets - $FRAME))
 TESTCLIP="$(dirname $0)/test_clip.sh"
 if [ $DRYRUN ]; then
     TESTCLIP="echo $TESTCLIP"
