@@ -1,6 +1,7 @@
 import sys
 import os
 import pandas as pd
+import numpy as np
 from matplotlib import pyplot as plt
 from draw import savedir
 
@@ -8,7 +9,10 @@ def draw(ax, video_data, **kwargs):
         frame = len(video_data.columns) - 3
         clip_data = video_data.loc[:, [str(i) for i in range(1, frame+1)]]
         clip_x = list(range(1, frame+1))
+        clip_data.replace(clip_data.max().max(), np.nan, inplace=True)
+        clip_data.dropna(inplace=True)
         clip_y = clip_data.mean()
+        print(clip_y)
         ax.plot(clip_x, clip_y, **kwargs)
 
 if __name__ == "__main__":
@@ -21,8 +25,8 @@ if __name__ == "__main__":
     print("Reading:", path1)
     data1 = pd.read_csv(path1)
     print(data1)
-    minimum = int(sys.argv[3])
-    maximum = int(sys.argv[4])
+    minimum = float(sys.argv[3])
+    maximum = float(sys.argv[4])
     print("Range:", [minimum, maximum])
 
     video_data0 = data0
