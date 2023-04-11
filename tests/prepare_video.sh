@@ -3,6 +3,7 @@
 ORIGIPATH=$1 # 原始完整视频路径（读取）
 SMALLPATH=$2 # 原始高清视频经裁剪缩放后视频路径（写入）
 SCALE=$3     # 缩放倍率
+ENCOPTS=$4   # 编码参数
 
 mkdir -p $(dirname $SMALLPATH)
 
@@ -14,5 +15,5 @@ SIZEARG="${small_width}x${small_height}"
 ENCODER="$(dirname $0)/../build/vpxenc"
 FFMPEG="ffmpeg -v quiet -y"
 RAWARG="-f rawvideo -pix_fmt yuv420p"
-$FFMPEG -i $ORIGIPATH -s $SIZEARG -vcodec rawvideo $RAWARG pipe:1 |            # 原始视频缩放后转rawvideo
-    $ENCODER --ivf --passes=1 -w $small_width -h $small_height -o $SMALLPATH - # 输入给vpxenc编码为IVF文件
+$FFMPEG -i $ORIGIPATH -s $SIZEARG -vcodec rawvideo $RAWARG pipe:1 |                     # 原始视频缩放后转rawvideo
+    $ENCODER --ivf --passes=1 -w $small_width -h $small_height $ENCOPTS -o $SMALLPATH - # 输入给vpxenc编码为IVF文件
