@@ -1,12 +1,28 @@
 # Player
 
+## Update
+
+```sh
+git pull
+git submodule update --remote --recursive
+```
+
 ## Build
+
+Before you start please install necessary buildtools according to `libvpx/README`.
 
 ```sh
 git submodule update --init --recursive
-git submodule update --remote --recursive
+chmod +x R .
 ./player-build.sh
 make player
+```
+
+## Prepare Dataset
+
+```sh
+VIDEOROOT=/home/cbj/dataset/ugc-dataset/vp9_compressed_videos/
+python tests/prepare_dataset.py 4 $VIDEOROOT
 ```
 
 ## Run
