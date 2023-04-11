@@ -33,12 +33,14 @@ python tests/prepare_images.py "$VIDEOROOT"_x4lossless "$IMAGEROOT"_x4lossless
 ## Run
 
 ```sh
-VIDEOROOT=/root/Programs/视频数据
+VIDEOROOT=/home/cbj/dataset/ugc-dataset/vp9_compressed_videos
+VIDEONAME=Gaming_1080P-0ce6_orig
+mkdir -p build/results
 SCALE=4
 SKIP=10
-FROM=00:01:35
+FROM=00:00:00
 FRAMES=600
-./player-test.sh $VIDEOROOT/4K.webm $VIDEOROOT/540p-small.ivf $VIDEOROOT/4K-small-nemo-$SCALE-$SKIP.mp4 $SCALE $SKIP $FROM $FRAMES
+./player-test.sh $VIDEOROOT/$VIDEONAME.mp4 "$VIDEOROOT"_x4lossless/$VIDEONAME.ivf build/results/$VIDEONAME.mp4 $SCALE $SKIP $FROM $FRAMES
 ```
 
 ## Build .so and .a
