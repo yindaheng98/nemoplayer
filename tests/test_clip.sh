@@ -1,4 +1,4 @@
-#!/bin/sh -x
+#!/bin/bash -x
 
 ORIGIPATH=$1     # 原始完整视频路径（读取）
 SMALLPATH=$2.ivf # 原始高清视频经裁剪缩放后视频路径（写入）

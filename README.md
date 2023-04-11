@@ -65,7 +65,7 @@ make player.a
 ## Test quality
 
 ```sh
-DRYRUN=1 ./tests/test_dataset.sh ~/datasets/ugc/youtube ~/datasets/ugc/tests ~/datasets/ugc/tests 4 16 > ./tasks_quality.sh
+DRYRUN=1 ./tests/test_dataset.sh ~/dataset/ugc-dataset/vp9_compressed_videos tests/data/temp tests/data/temp 4 16 > ./tasks_quality.sh
 python3 ./tests/runner.py --tasks ./tasks_quality.sh
 ```
 
