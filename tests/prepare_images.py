@@ -13,7 +13,12 @@ for name in os.listdir(root_orig):
     path_orig = os.path.join(root_orig, name)
     path_desc = os.path.join(root_desc, dirname)
     os.makedirs(path_desc, exist_ok=True)
-    tasks.append(['ffmpeg', '-y', '-i', path_orig, os.path.join(path_desc, '%03d.png')])
+    tasks.append([
+        'python',
+        os.path.join(os.path.dirname(sys.argv[0]), 'prepare_video.py'),
+        path_orig,
+        os.path.join(path_desc, '%03d.png')
+    ])
 
 task_queue = Queue(len(tasks))
 for task in tasks:
