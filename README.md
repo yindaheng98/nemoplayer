@@ -21,19 +21,19 @@ make player
 ## Prepare Dataset
 
 ```sh
-VIDEOROOT=/home/cbj/dataset/ugc-dataset/vp9_compressed_videos
+VIDEOROOT=~/dataset/ugc-dataset/vp9_compressed_videos
 python tests/prepare_dataset.py 4 $VIDEOROOT
 python tests/prepare_dataset.py 4 $VIDEOROOT lossless --lossless=1
-IMAGEROOT=/home/cbj/dataset/ugc-dataset-image/vp9_compressed_videos
+IMAGEROOT=~/dataset/ugc-dataset-image/vp9_compressed_videos
 python tests/prepare_images.py $VIDEOROOT $IMAGEROOT
 python tests/prepare_images.py "$VIDEOROOT"_x4 "$IMAGEROOT"_x4
 python tests/prepare_images.py "$VIDEOROOT"_x4lossless "$IMAGEROOT"_x4lossless
 ```
 
-## Run
+## Test Player
 
 ```sh
-VIDEOROOT=/home/cbj/dataset/ugc-dataset/vp9_compressed_videos
+VIDEOROOT=~/dataset/ugc-dataset/vp9_compressed_videos
 VIDEONAME=Gaming_1080P-0ce6_orig
 mkdir -p build/results
 SCALE=4
@@ -41,6 +41,18 @@ SKIP=10
 FROM=00:00:00
 FRAMES=600
 ./player-test.sh $VIDEOROOT/$VIDEONAME.mp4 "$VIDEOROOT"_x4lossless/$VIDEONAME.ivf build/results/$VIDEONAME.mp4 $SCALE $SKIP $FROM $FRAMES
+```
+
+## Export size of frames
+
+```sh
+VIDEOROOT=~/dataset/ugc-dataset/vp9_compressed_videos
+
+rm -rf tests/data/size_x4
+PYTHONPATH=tests python3 tests/export_size.py --videos "$VIDEOROOT"_x4 --datadir tests/data/size_x4
+
+rm -rf tests/data/size_x4lossless
+PYTHONPATH=tests python3 tests/export_size.py --videos "$VIDEOROOT"_x4lossless --datadir tests/data/size_x4lossless
 ```
 
 ## Build .so and .a
@@ -76,13 +88,6 @@ For example:
 
 ```sh
 source /home/seu/FrogSR/venv/bin/activate && python3 ./tests/runner.py --devices 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,31,32 --tasks ./tasks_quality.sh --preprocess "export INTEGRATION='source /home/seu/FrogSR/venv/bin/activate && PYTHONPATH=/home/seu/FrogSR python /home/seu/FrogSR/vrt_server_cli.py --ports 8001,8002,8003,8004,8005,8006,8007,8008 --path'"
-```
-
-## Test size
-
-```sh
-DRYRUN=1 ./tests/test_dataset_size.sh ~/datasets/ugc/youtube ~/datasets/ugc/tests 4 > ./tasks_size.sh
-python3 ./tests/runner.py --tasks ./tasks_size.sh
 ```
 
 ## Gather data
