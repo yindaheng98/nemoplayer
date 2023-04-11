@@ -29,13 +29,14 @@ PLAYER="$(dirname $0)/../player"
 HQVIDEO="$FFMPEG -i $ORIGIPATH -vcodec rawvideo $RAWARG -vf select='eq(n\,$START)' -vsync vfr pipe:1" # 原始视频所选起始帧转rawvideo作为高清低帧率输入
 SMALLPATH_INT=$SMALLPATH.for_integration.ivf
 if [ "$INTEGRATION" ]; then
-    START_INT=$(($START - $FRAME + 1)) # 往前取FRAME帧用于计算
-    if [ $START_INT -lt 0 ]; then
-        rm $SMALLPATH
-        exit 0
-    fi
-    down_scale $START_INT $START $SMALLPATH_INT # 生成原始视频缩放后IVF文件
-    HQVIDEO="$INTEGRATION $SMALLPATH_INT"       # 用INTEGRATION指定如何生成高清低帧率输入
+    # START_INT=$(($START - $FRAME + 1)) # 往前取FRAME帧用于计算
+    # if [ $START_INT -lt 0 ]; then
+    #     rm $SMALLPATH
+    #     exit 0
+    # fi
+    # down_scale $START_INT $START $SMALLPATH_INT # 生成原始视频缩放后IVF文件
+    # HQVIDEO="$INTEGRATION $SMALLPATH_INT"       # 用INTEGRATION指定如何生成高清低帧率输入
+    HQVIDEO="$INTEGRATION $SMALLPATH" # 用INTEGRATION指定如何生成高清低帧率输入
 fi
 sh -c "$HQVIDEO" |                                                                                                   # 总之来一个高清低帧率输入
     $PLAYER $SMALLPATH - - $SCALE $FRAME |                                                                           # player程序：从文件读低清高帧率视频；从stdin读高清低帧率视频；高清高帧率视频输出到stdout
