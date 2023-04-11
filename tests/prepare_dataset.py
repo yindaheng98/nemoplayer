@@ -19,7 +19,7 @@ tasks = []
 for name in os.listdir(root_orig):
     path_orig = os.path.join(root_orig, name)
 
-    path_desc = os.path.join(root_desc, name + '.ivf')
+    path_desc = os.path.join(root_desc, os.path.splitext(name)[0] + '.ivf')
     tasks.append([script, path_orig, path_desc, str(scale), *enc_opts])
 
 task_queue = Queue(len(tasks))
