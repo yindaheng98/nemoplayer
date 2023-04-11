@@ -20,7 +20,7 @@ data_append(args=args, data=psnr(frames_o, frames_b), name="psnr_b")
 
 
 def ssim(frames1, frames2):
-    return [structural_similarity(frames1[i, ...], frames2[i, ...], multichannel=True) for i in range(frames2.shape[0])]
+    return [structural_similarity(frames1[i, ...], frames2[i, ...], channel_axis=-1) for i in range(frames2.shape[0])]
 
 
 data_append(args=args, data=ssim(frames_o, frames_d), name="ssim")
