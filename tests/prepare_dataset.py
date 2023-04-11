@@ -9,16 +9,18 @@ script = os.path.join(os.path.dirname(sys.argv[0]), "prepare_video.sh")
 scale = int(sys.argv[1])
 root_orig = sys.argv[2]
 root_desc = os.path.join(root_orig, '')[0:-1] + "_x%d" % scale
-root_desc_lossless = root_desc + 'lossless'
+if len(sys.argv) >= 4:
+    root_desc += sys.argv[3]
+enc_opts = []
+if len(sys.argv) >= 5:
+    enc_opts = sys.argv[4:]
+
 tasks = []
 for name in os.listdir(root_orig):
     path_orig = os.path.join(root_orig, name)
 
     path_desc = os.path.join(root_desc, name + '.ivf')
-    tasks.append([script, path_orig, path_desc, str(scale)])
-
-    path_desc_lossless = os.path.join(root_desc_lossless, name + '.ivf')
-    tasks.append([script, path_orig, path_desc_lossless, str(scale), '--lossless=1'])
+    tasks.append([script, path_orig, path_desc, str(scale), *enc_opts])
 
 task_queue = Queue(len(tasks))
 for task in tasks:

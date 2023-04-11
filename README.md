@@ -23,6 +23,7 @@ make player
 ```sh
 VIDEOROOT=/home/cbj/dataset/ugc-dataset/vp9_compressed_videos/
 python tests/prepare_dataset.py 4 $VIDEOROOT
+python tests/prepare_dataset.py 4 $VIDEOROOT lossless --lossless=1
 ```
 
 ## Run
