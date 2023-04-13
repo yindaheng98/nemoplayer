@@ -26,11 +26,25 @@ python tests/prepare_dataset.py 4 $VIDEOROOT
 python tests/prepare_dataset.py 4 $VIDEOROOT lossless --lossless=1
 ```
 
+```sh
+VIDEOROOT=~/dataset/ugc-dataset/original_videos_h264
+python tests/prepare_dataset.py 4 $VIDEOROOT
+python tests/prepare_dataset.py 4 $VIDEOROOT lossless --lossless=1
+```
+
 ## Split to images
 
 ```sh
 VIDEOROOT=~/dataset/ugc-dataset/vp9_compressed_videos
 IMAGEROOT=~/dataset/ugc-dataset-image/vp9_compressed_videos
+python tests/prepare_images.py $VIDEOROOT $IMAGEROOT
+python tests/prepare_images.py "$VIDEOROOT"_x4 "$IMAGEROOT"_x4
+python tests/prepare_images.py "$VIDEOROOT"_x4lossless "$IMAGEROOT"_x4lossless
+```
+
+```sh
+VIDEOROOT=~/dataset/ugc-dataset/original_videos_h264
+IMAGEROOT=~/dataset/ugc-dataset-image/original_videos_h264
 python tests/prepare_images.py $VIDEOROOT $IMAGEROOT
 python tests/prepare_images.py "$VIDEOROOT"_x4 "$IMAGEROOT"_x4
 python tests/prepare_images.py "$VIDEOROOT"_x4lossless "$IMAGEROOT"_x4lossless
