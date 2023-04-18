@@ -18,6 +18,16 @@ chmod +x R .
 make player
 ```
 
+## Download Dataset
+
+```sh
+mkdir -p ~/dataset
+cd ~/dataset
+gsutil ls gs://ugc-dataset/original_videos_h264/*1080P*
+mkdir -p ~/dataset/ugc-dataset/original_videos_h264
+gsutil cp gs://ugc-dataset/original_videos_h264/*1080P* ~/dataset/ugc-dataset/original_videos_h264
+```
+
 ## Downsample Video
 
 ```sh
