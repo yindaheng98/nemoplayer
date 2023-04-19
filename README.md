@@ -85,6 +85,16 @@ rm -rf tests/data/size_x4lossless
 PYTHONPATH=tests python3 tests/export_size.py --videos "$VIDEOROOT"_x4lossless --datadir tests/data/size_x4lossless
 ```
 
+```sh
+VIDEOROOT=~/dataset/ugc-dataset/original_videos_h264
+
+rm -rf tests/data/size_x4
+PYTHONPATH=tests python3 tests/export_size.py --videos "$VIDEOROOT"_x4 --datadir tests/data/size_x4
+
+rm -rf tests/data/size_x4lossless
+PYTHONPATH=tests python3 tests/export_size.py --videos "$VIDEOROOT"_x4lossless --datadir tests/data/size_x4lossless
+```
+
 ## Build .so and .a
 
 ```sh
@@ -95,8 +105,9 @@ make player.a
 ## Test quality
 
 ```sh
+VIDEOROOT=~/dataset/ugc-dataset/original_videos_h264
 rm ./tasks_quality.sh
-DRYRUN=1 ./tests/test_dataset.sh ~/dataset/ugc-dataset/vp9_compressed_videos tests/data/temp tests/data/temp 4 16 > ./tasks_quality.sh
+DRYRUN=1 ./tests/test_dataset.sh $VIDEOROOT tests/data/temp tests/data/temp 4 16 > ./tasks_quality.sh
 python3 ./tests/runner.py --tasks ./tasks_quality.sh
 ```
 
