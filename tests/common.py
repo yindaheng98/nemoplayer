@@ -86,12 +86,7 @@ def read_videos(args):
     frames_s = read_video_sequence_all(args.small, width_d // args.scale, height_d // args.scale)
     logging.info(f"Lowres frames shape: {frames_s.shape}")
 
-    frames_b = np.stack([
-        cv2.resize(frames_s[i, ...], dsize=(0, 0), fx=args.scale, fy=args.scale, interpolation=cv2.INTER_CUBIC) for i in range(frames_s.shape[0])
-    ])
-    logging.info(f"Bicubi frames shape: {frames_b.shape}")
-
-    return frames_o, frames_d, frames_s, frames_b
+    return frames_o, frames_d, frames_s
 
 
 def data_append(args, name, data):
