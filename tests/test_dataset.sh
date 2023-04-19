@@ -1,4 +1,4 @@
-#!/bin/bash -x
+#!/bin/bash
 
 ORIGIDIR=$1
 SMALLDIR=$2 # 原始高清视频经裁剪缩放后视频文件夹路径（写入）
