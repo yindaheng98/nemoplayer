@@ -118,7 +118,12 @@ DRYRUN=1 ./tests/test_dataset.sh ~/dataset/ugc-dataset/vp9_compressed_videos tes
 python3 ./tests/runner.py --tasks ./tasks_quality.sh --preprocess "export INTEGRATION='python ./tests/integrate_sr.py ~/dataset/ugc-dataset-image/vp9_compressed_videos'"
 ```
 
-Then your INTEGRATION would be call linke this:
+```sh
+DRYRUN=1 ./tests/test_dataset.sh ~/dataset/ugc-dataset/original_videos_h264 tests/data/temp tests/data/temp 4 16 > ./tasks_quality.sh
+python3 ./tests/runner.py --tasks ./tasks_quality.sh --preprocess "export INTEGRATION='python ./tests/integrate_sr.py ~/dataset/ugc-dataset-image/original_videos_h264'"
+```
+
+Then your INTEGRATION would be call like this:
 
 ```sh
 python /path/to/upscale/script.py /path/to/low/resolution/video.mp4 | some other operation
@@ -127,6 +132,11 @@ python /path/to/upscale/script.py /path/to/low/resolution/video.mp4 | some other
 Your `/path/to/upscale/script.py` should read the `/path/to/low/resolution/video.mp4`, upscale the first frame, and pipe the high resolution frame to `stdout`.
 
 For example:
+
+```sh
+DRYRUN=1 ./tests/test_dataset.sh ~/dataset/ugc-dataset/original_videos_h264 tests/data/temp tests/data/temp 4 16 > ./tasks_quality.sh
+python3 ./tests/runner.py --tasks ./tasks_quality.sh --preprocess "export INTEGRATION='python ./tests/integrate_sr_rgb.py ~/FrogSR_train/tmp/vrt_test/7'"
+```
 
 ```sh
 source /home/seu/FrogSR/venv/bin/activate && python3 ./tests/runner.py --devices 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,31,32 --tasks ./tasks_quality.sh --preprocess "export INTEGRATION='source /home/seu/FrogSR/venv/bin/activate && PYTHONPATH=/home/seu/FrogSR python /home/seu/FrogSR/vrt_server_cli.py --ports 8001,8002,8003,8004,8005,8006,8007,8008 --path'"
