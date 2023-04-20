@@ -6,7 +6,7 @@ from queue import Queue, Empty
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--tasks', type=str, default='tasks.sh', help='Task list')
-parser.add_argument('--devices', type=str, default=",".join(list(str(i) for i in range(1, 129))), help='Devices to use')
+parser.add_argument('--devices', type=str, default=",".join(list(str(i) for i in range(1, 64))), help='Devices to use')
 parser.add_argument('--preprocess', type=str, default="pwd", help='Some preprocess command here (e.g. set environment variables)')
 args = parser.parse_args()
 root = os.path.dirname(os.path.abspath(args.tasks))
