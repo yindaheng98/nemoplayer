@@ -8,6 +8,7 @@ from skimage.metrics import structural_similarity
 
 logging.basicConfig(level=logging.INFO)
 
+
 def task(lq_root, gt_root, video):
     length = max([int(os.path.splitext(frame)[0]) for frame in os.listdir(os.path.join(lq_root, video))])
     psnr, ssim = [0] * length, [0] * length
@@ -26,13 +27,13 @@ def task(lq_root, gt_root, video):
             print(e)
     return psnr, ssim
 
+
 if __name__ == '__main__':
 
     parser = argparse.ArgumentParser()
     parser.add_argument('--lq', type=str, required=True, help='Path of the low quality videos')
     parser.add_argument('--gt', type=str, required=True, help='Path of the ground truth videos')
     parser.add_argument('--datadir', type=str, required=True, help='Dir for export data')
-
 
     args = parser.parse_args()
     logging.info({
@@ -41,14 +42,11 @@ if __name__ == '__main__':
         '--datadir': args.datadir,
     })
     os.makedirs(args.datadir, exist_ok=True)
-    
+
     mp.set_start_method('spawn')
     pool = mp.Pool(4)
     videos = os.listdir(args.lq)
-    results = {}
-    for video in videos:
-        print(video)
-        results[video] = pool.apply_async(task, (args.lq, args.gt, video))
+    results = {video: pool.apply_async(task, (args.lq, args.gt, video)) for video in videos}
     for video in videos:
         psnr, ssim = results[video].get()
         print(psnr, ssim)
