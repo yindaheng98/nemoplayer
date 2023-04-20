@@ -142,7 +142,7 @@ For example:
 
 ```sh
 DRYRUN=1 ./tests/test_dataset.sh ~/dataset/ugc-dataset/original_videos_h264 tests/data/temp tests/data/temp 4 16 > ./tasks_quality.sh
-python3 ./tests/runner.py --tasks ./tasks_quality.sh --shuffle --preprocess "export INTEGRATION='python ./tests/integrate_sr_rgb.py ~/FrogSR_train/tmp/vrt_test/7'"
+python3 ./tests/runner.py --tasks ./tasks_quality.sh --shuffle --preprocess "export INTEGRATION='python ./tests/integrate_sr_rgb.py ~/FrogSR_train/tmp/vrt_test/7' && export NAME=decoder7"
 ```
 
 ```sh
