@@ -44,9 +44,14 @@ if __name__ == '__main__':
     os.makedirs(args.datadir, exist_ok=True)
 
     mp.set_start_method('spawn')
-    pool = mp.Pool(4)
+    pool = mp.Pool(32)
     videos = os.listdir(args.lq)
     results = {video: pool.apply_async(task, (args.lq, args.gt, video)) for video in videos}
-    for video in videos:
-        psnr, ssim = results[video].get()
-        print(psnr, ssim)
+
+    psnr_path = os.path.join(args.datadir, "psnr.csv")
+    ssim_path = os.path.join(args.datadir, "ssim.csv")
+    with open(psnr_path, "a+", encoding='utf8') as psnr_f, open(ssim_path, "a+", encoding='utf8') as ssim_f:
+        for video in videos:
+            psnr, ssim = results[video].get()
+            psnr_f.write(f"{video},{','.join(str(frame) for frame in psnr)}\n")
+            ssim_f.write(f"{video},{','.join(str(frame) for frame in ssim)}\n")
