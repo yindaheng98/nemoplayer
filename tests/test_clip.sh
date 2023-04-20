@@ -43,7 +43,7 @@ sh -c "$HQVIDEO" |                                                              
     ffmpeg -video_size "${width}x${height}" $RAWARG -i pipe:0 -v quiet -c:v libx264 -preset slow -qp 0 -y $DSTINPATH # 编码为MP4写入文件，方便看
 rm $SMALLPATH_INT
 
-DATADIR=$(dirname $0)/data/$DEVICE
+DATADIR=$(dirname $0)/data/tasks/$DEVICE
 mkdir -p $DATADIR
 QRUN="$(dirname $0)/quality.py"
 PYTHONPATH=$(dirname $0) python3 $QRUN --name $(basename $ORIGIPATH) --origin $ORIGIPATH --destin $DSTINPATH --small $SMALLPATH --start $START --frame $FRAME --scale $SCALE --datadir $DATADIR
