@@ -152,17 +152,10 @@ source /home/seu/FrogSR/venv/bin/activate && python3 ./tests/runner.py --devices
 ## Gather data
 
 ```sh
-./tests/test_clip_headers.sh 16 > psnr.csv
-cat ./tests/data/*/psnr.csv >> psnr.csv
-./tests/test_clip_headers.sh 16 > ssim.csv
-cat ./tests/data/*/ssim.csv >> ssim.csv
-./tests/test_clip_headers.sh 16 > psnr_b.csv
-cat ./tests/data/*/psnr_b.csv >> psnr_b.csv
-./tests/test_clip_headers.sh 16 > ssim_b.csv
-cat ./tests/data/*/ssim_b.csv >> ssim_b.csv
-./tests/test_clip_headers.sh 16 > size.csv
-cat ./tests/data/*/size.csv >> size.csv
-cat ./tests/data/*/size_full.csv > size_full.csv
+./tests/test_clip_headers.sh 16 > psnr7.csv
+cat ./tests/data/decoder7/*/psnr.csv >> psnr7.csv
+./tests/test_clip_headers.sh 16 > ssim7.csv
+cat ./tests/data/decoder7/*/ssim.csv >> ssim7.csv
 ```
 
 ## Draw quality
