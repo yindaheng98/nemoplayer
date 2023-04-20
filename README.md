@@ -95,6 +95,13 @@ rm -rf tests/data/size_x4lossless
 PYTHONPATH=tests python3 tests/export_size.py --videos "$VIDEOROOT"_x4lossless --datadir tests/data/size_x4lossless
 ```
 
+## Export bicubic quality
+
+```sh
+IMAGEROOT=~/dataset/ugc-dataset-image/original_videos_h264
+python3 tests/export_bicubic_quality.py --lq "$IMAGEROOT"_x4lossless --gt "$IMAGEROOT" --datadir tests/data/bicubic_x4lossless
+```
+
 ## Build .so and .a
 
 ```sh
