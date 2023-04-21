@@ -13,4 +13,4 @@ frames_d_cuda = torch.from_numpy(frames_d) #.to('cuda')
 
 data_append(args=args, data=list(psnr(frames_o_cuda, frames_d_cuda, data_range=255, reduction='none').cpu().numpy()), name="psnr")
 
-data_append(args=args, data=list(ssim(frames_o_cuda.permute(0,3,1,2), frames_d_cuda.permute(0,3,1,2), data_range=255, reduction='none').cpu().numpy()), name="ssim")
+data_append(args=args, data=list(ssim(frames_o_cuda.permute(0,3,1,2), frames_d_cuda.permute(0,3,1,2), data_range=255, reduction='none', kernel_size=7, downsample=False).cpu().numpy()), name="ssim")
