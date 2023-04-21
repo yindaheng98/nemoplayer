@@ -9,7 +9,7 @@ random.seed(20230421)
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--tasks', type=str, default='tasks.sh', help='Task list')
-parser.add_argument('--devices', type=str, default=",".join(list(str(i) for i in range(1, 64))), help='Devices to use')
+parser.add_argument('--devices', type=str, default=",".join(list(str(i) for i in range(1, 32))), help='Devices to use')
 parser.add_argument('--preprocess', type=str, default="pwd", help='Some preprocess command here (e.g. set environment variables)')
 parser.add_argument('--shuffle', action="store_true", help='Shuffle the tasks')
 args = parser.parse_args()
