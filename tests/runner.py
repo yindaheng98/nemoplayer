@@ -38,16 +38,16 @@ async def print_std(prefix, f):
         print(f"{time.strftime('%Y-%m-%d %X', time.localtime())} {prefix} | {line.strip().decode('utf8')}")
 
 
-async def task_wrapper(device_id, task, preprocess):
-    cmd = f"cd {root} && {preprocess} && export DEVICE={device_id} && {task}"
+async def task_wrapper(pid, device_id, task, preprocess):
+    cmd = f"cd {root} && {preprocess} && export TASKID={pid} && export DEVICE={device_id} && {task}"
     proc = await asyncio.create_subprocess_exec(
         'sh', '-c', cmd,
         stdout=asyncio.subprocess.PIPE,
         stderr=asyncio.subprocess.PIPE
     )
     await asyncio.gather(
-        print_std(f"{device_id} stdout", proc.stdout),
-        print_std(f"{device_id} stderr", proc.stderr)
+        print_std(f"{pid} stdout", proc.stdout),
+        print_std(f"{pid} stderr", proc.stderr)
     )
     return await proc.wait()
 
@@ -55,11 +55,11 @@ async def task_wrapper(device_id, task, preprocess):
 failed_tasks = []
 
 
-async def runner(device_id, task_queue: Queue, preprocess):
+async def runner(pid, device_id, task_queue: Queue, preprocess):
     while True:
         try:
             task = task_queue.get_nowait()
-            return_code = await task_wrapper(device_id, task, preprocess)
+            return_code = await task_wrapper(pid, device_id, task, preprocess)
             if return_code != 0:
                 failed_tasks.append(task)
             task_queue.task_done()
@@ -77,8 +77,8 @@ async def main():
         except Exception:
             pass
     print(device_list)
-    for device_id in device_list:
-        runners.append(runner(device_id, task_queue, args.preprocess))
+    for pid, device_id in enumerate(device_list):
+        runners.append(runner(pid, device_id, task_queue, args.preprocess))
     await asyncio.gather(*runners)
     for task in failed_tasks:
         print(f"failed | {task}")
