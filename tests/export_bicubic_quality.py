@@ -45,12 +45,15 @@ def task(lq_root, gt_root, video):
                 ssim_usort = ssim(gts.permute(0,3,1,2), hrs.permute(0,3,1,2), data_range=255, reduction='none', kernel_size=7, downsample=False).cpu()
             except RuntimeError as e:
                 print("Fallback to cpu because of", e)
+                gts = gts.cpu()
+                hrs = hrs.cpu()
+            torch.cuda.empty_cache()
             print(f"Process{pid}", "Calculating PSNR", video, [batch*batch_size,(batch+1)*batch_size])
             psnr_usort = psnr(gts, hrs, data_range=255, reduction='none')
             print(f"Process{pid}", "Calculating SSIM", video, [batch*batch_size,(batch+1)*batch_size])
             ssim_usort = ssim(gts.permute(0,3,1,2), hrs.permute(0,3,1,2), data_range=255, reduction='none', kernel_size=7, downsample=False)
             
-            psnr_usort, ssim_usort = list(psnr_usort.cpu().numpy()), list(ssim_usort.numpy())
+            psnr_usort, ssim_usort = list(psnr_usort.numpy()), list(ssim_usort.numpy())
             for i, p, s in zip(frame_idx, psnr_usort, ssim_usort):
                 psnr_sort[i-1], ssim_sort[i-1] = p, s
         
