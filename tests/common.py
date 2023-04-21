@@ -83,10 +83,7 @@ def read_videos(args):
     frames_d = read_video_sequence_all(args.destin, width_d, height_d)
     logging.info(f"Destin frames shape: {frames_d.shape}")
 
-    frames_s = read_video_sequence_all(args.small, width_d // args.scale, height_d // args.scale)
-    logging.info(f"Lowres frames shape: {frames_s.shape}")
-
-    return frames_o, frames_d, frames_s
+    return frames_o, frames_d
 
 
 def data_append(args, name, data):

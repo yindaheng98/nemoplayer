@@ -8,7 +8,7 @@ from common import parse_args, read_videos, data_append
 logging.basicConfig(level=logging.INFO)
 
 args = parse_args()
-frames_o, frames_d, frames_s = read_videos(args)
+frames_o, frames_d = read_videos(args)
 
 
 def psnr(frames1, frames2):
