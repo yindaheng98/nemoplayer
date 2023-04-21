@@ -149,8 +149,8 @@ Your `/path/to/upscale/script.py` should read the `/path/to/low/resolution/video
 For example:
 
 ```sh
-python3 ./tests/runner.py --tasks ./tasks_quality.sh --shuffle --preprocess "export INTEGRATION='python ./tests/integrate_sr_rgb.py ~/FrogSR_train/tmp/vrt_test/7' && export NAME=decoder7" --devices 0,1,2,3,4,5,6,7,0,1,2,3,4,5,6,7,0,1,2,3,4,5,6,7,0,1,2,3,4,5,6,7
-python3 ./tests/runner.py --tasks ./tasks_quality.sh --shuffle --preprocess "export INTEGRATION='python ./tests/integrate_sr_rgb.py ~/FrogSR_train/tmp/vrt_test/3' && export NAME=decoder3" --devices 0,1,2,3,4,5,6,7,0,1,2,3,4,5,6,7,0,1,2,3,4,5,6,7,0,1,2,3,4,5,6,7
+python3 ./tests/runner.py --tasks ./tasks_quality.sh --shuffle --preprocess "export INTEGRATION='python ./tests/integrate_sr_rgb.py ~/FrogSR_train/tmp/vrt_test/7' && export NAME=decoder7" --devices 0,1,2,3,0,1,2,3,0,1,2,3,0,1,2,3,0,1,2,3,0,1,2,3,0,1,2,3,0,1,2,3
+python3 ./tests/runner.py --tasks ./tasks_quality.sh --shuffle --preprocess "export INTEGRATION='python ./tests/integrate_sr_rgb.py ~/FrogSR_train/tmp/vrt_test/3' && export NAME=decoder3" --devices 4,5,6,7,4,5,6,7,4,5,6,7,4,5,6,7,4,5,6,7,4,5,6,7,4,5,6,7,4,5,6,7
 ```
 
 ## Gather data
