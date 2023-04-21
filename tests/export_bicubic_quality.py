@@ -78,7 +78,7 @@ if __name__ == '__main__':
     os.makedirs(args.datadir, exist_ok=True)
 
     mp.set_start_method('spawn')
-    pool = mp.Pool(1)
+    pool = mp.Pool(8)
     videos = os.listdir(args.lq)
     results = {video: pool.apply_async(task, (args.lq, args.gt, video)) for video in videos}
 
