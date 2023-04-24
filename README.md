@@ -88,6 +88,9 @@ PYTHONPATH=tests python3 tests/export_size.py --videos "$VIDEOROOT"_x4lossless -
 ```sh
 VIDEOROOT=~/dataset/ugc-dataset/original_videos_h264
 
+rm -rf tests/data/size
+PYTHONPATH=tests python3 tests/export_size.py --videos "$VIDEOROOT" --datadir tests/data/size
+
 rm -rf tests/data/size_x4
 PYTHONPATH=tests python3 tests/export_size.py --videos "$VIDEOROOT"_x4 --datadir tests/data/size_x4
 
