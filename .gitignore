@@ -1,7 +1,7 @@
 build
 player
 *.csv
-
+/tasks_*
 
 # Using https://github.com/github/gitignore/blob/main/C.gitignore
 

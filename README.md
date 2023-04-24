@@ -105,6 +105,18 @@ IMAGEROOT=~/dataset/ugc-dataset-image/original_videos_h264
 python3 tests/export_bicubic_quality.py --lq "$IMAGEROOT"_x4lossless --gt "$IMAGEROOT" --datadir tests/data/bicubic_x4lossless
 ```
 
+## Export quality and size of frames from different bitrates
+
+```sh
+VIDEOROOT=~/dataset/ugc-dataset/original_videos_h264
+./tests/test_bitrates.sh $VIDEOROOT tests/data/temp 4M > ./tasks_bitrates_quality.sh
+./tests/test_bitrates.sh $VIDEOROOT tests/data/temp 2M >> ./tasks_bitrates_quality.sh
+./tests/test_bitrates.sh $VIDEOROOT tests/data/temp 1M >> ./tasks_bitrates_quality.sh
+./tests/test_bitrates.sh $VIDEOROOT tests/data/temp 512k >> ./tasks_bitrates_quality.sh
+./tests/test_bitrates.sh $VIDEOROOT tests/data/temp 256k >> ./tasks_bitrates_quality.sh
+python3 ./tests/runner.py --tasks ./tasks_bitrates_quality.sh --shuffle --preprocess "export NAME=bitrates" --devices 0,1,2,3,4,5,6,7,0,1,2,3,4,5,6,7
+```
+
 ## Build .so and .a
 
 ```sh
