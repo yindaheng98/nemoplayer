@@ -156,24 +156,15 @@ python3 ./tests/runner.py --tasks ./tasks_quality.sh --shuffle --preprocess "exp
 ## Gather data
 
 ```sh
-./tests/test_clip_headers.sh 16 > psnr7.csv
+echo "video,start,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15" > psnr7.csv
 cat ./tests/data/decoder7/*/psnr.csv >> psnr7.csv
-./tests/test_clip_headers.sh 16 > ssim7.csv
+
+echo "video,start,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15" > ssim7.csv
 cat ./tests/data/decoder7/*/ssim.csv >> ssim7.csv
-```
 
-## Draw quality
+echo "video,start,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15" > psnr3.csv
+cat ./tests/data/decoder3/*/psnr.csv >> psnr3.csv
 
-```sh
-rm tests/figures/*.size.csv.png
-rm tests/figures/*.size.csv.log_yscale.png
-cat > ./draw.sh <<EOF
-python3 ./tests/draw_compare.py psnr.csv psnr_b.csv 0 100
-python3 ./tests/draw_compare.py ssim.csv ssim_b.csv 0 1
-python3 ./tests/draw_size.py size.csv size_full.csv
-EOF
-python3 ./tests/runner.py --devices '1,2,3' --tasks ./draw.sh
-rm ./draw.sh
-python3 ./tests/draw_average.py psnr.csv psnr_b.csv 0 50
-python3 ./tests/draw_average.py ssim.csv ssim_b.csv 0.5 1
+echo "video,start,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15" > ssim3.csv
+cat ./tests/data/decoder3/*/ssim.csv >> ssim3.csv
 ```
