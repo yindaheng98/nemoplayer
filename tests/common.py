@@ -11,10 +11,8 @@ parser = argparse.ArgumentParser()
 parser.add_argument('--name', type=str, required=True, help='Name of the video')
 parser.add_argument('--origin', type=str, required=True, help='Origin video path')
 parser.add_argument('--destin', type=str, required=True, help='Proceeded video path')
-parser.add_argument('--small', type=str, required=True, help='Small video path')
 parser.add_argument('--start', type=int, required=True, help='Start frame index')
 parser.add_argument('--frame', type=int, required=True, help='Number of frames')
-parser.add_argument('--scale', type=int, required=True, help='Scale for bicubic')
 parser.add_argument('--datadir', type=str, required=True, help='Dir for data')
 
 
@@ -24,10 +22,8 @@ def parse_args():
         '--name': args.name,
         '--origin': args.origin,
         '--destin': args.destin,
-        '--small': args.small,
         '--start': args.start,
         '--frame': args.frame,
-        '--scale': args.scale,
         '--datadir': args.datadir,
     })
     return args

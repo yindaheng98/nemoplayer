@@ -46,7 +46,7 @@ sh -c "$HQVIDEO" |                                                              
 DATADIR=$(dirname $0)/data/$NAME/$TASKID
 mkdir -p $DATADIR
 QRUN="$(dirname $0)/quality.py"
-PYTHONPATH=$(dirname $0) CUDA_VISIBLE_DEVICES=$DEVICE python3 $QRUN --name $(basename $ORIGIPATH) --origin $ORIGIPATH --destin $DSTINPATH --small $SMALLPATH --start $START --frame $FRAME --scale $SCALE --datadir $DATADIR
+PYTHONPATH=$(dirname $0) CUDA_VISIBLE_DEVICES=$DEVICE python3 $QRUN --name $(basename $ORIGIPATH) --origin $ORIGIPATH --destin $DSTINPATH --start $START --frame $FRAME --datadir $DATADIR
 
 rm $SMALLPATH
 rm $DSTINPATH
