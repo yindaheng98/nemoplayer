@@ -2,14 +2,13 @@ import logging
 import torch
 from piq import psnr, ssim
 
-from common import parse_args, read_videos, data_append
+from common import read_videos, data_append
 
 logging.basicConfig(level=logging.INFO)
 
 
-def quality(args):
+def quality(frames_o, frames_d):
 
-    frames_o, frames_d = read_videos(args)
     frames_o_cpu = torch.from_numpy(frames_o)
     frames_d_cpu = torch.from_numpy(frames_d)
 
@@ -33,7 +32,9 @@ def quality(args):
     return psnr_, ssim_
 
 if __name__ == "__main__":
+    from common import parse_args
     args = parse_args()
-    psnr_, ssim_ = quality(args)
+    frames_o, frames_d = read_videos(args)
+    psnr_, ssim_ = quality(frames_o, frames_d)
     data_append(args=args, data=list(psnr_.numpy()), name="psnr")
     data_append(args=args, data=list(ssim_.numpy()), name="ssim")
