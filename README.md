@@ -32,14 +32,14 @@ gsutil cp gs://ugc-dataset/original_videos_h264/*1080P* ~/dataset/ugc-dataset/or
 
 ```sh
 VIDEOROOT=~/dataset/ugc-dataset/vp9_compressed_videos
-python tests/prepare_dataset.py 4 $VIDEOROOT
-python tests/prepare_dataset.py 4 $VIDEOROOT lossless --lossless=1
+python tests/prepare_videos.py 4 $VIDEOROOT
+python tests/prepare_videos.py 4 $VIDEOROOT lossless --lossless=1
 ```
 
 ```sh
 VIDEOROOT=~/dataset/ugc-dataset/original_videos_h264
-python tests/prepare_dataset.py 4 $VIDEOROOT
-python tests/prepare_dataset.py 4 $VIDEOROOT lossless --lossless=1
+python tests/prepare_videos.py 4 $VIDEOROOT
+python tests/prepare_videos.py 4 $VIDEOROOT lossless --lossless=1
 ```
 
 ## Split to images

@@ -15,7 +15,7 @@ for name in os.listdir(root_orig):
     os.makedirs(path_desc, exist_ok=True)
     tasks.append([
         'python',
-        os.path.join(os.path.dirname(sys.argv[0]), 'prepare_video.py'),
+        os.path.join(os.path.dirname(sys.argv[0]), 'prepare_image.py'),
         path_orig,
         os.path.join(path_desc, '%03d.png')
     ])
