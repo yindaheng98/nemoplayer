@@ -29,12 +29,12 @@ def quality(frames_o, frames_d):
         psnr_ = psnr(frames_o_cpu, frames_d_cpu, data_range=255, reduction='none')
         ssim_ = ssim(frames_o_cpu.permute(0,3,1,2), frames_d_cpu.permute(0,3,1,2), data_range=255, reduction='none', kernel_size=7, downsample=False).cpu()
     
-    return psnr_, ssim_
+    return list(psnr_.numpy()), list(ssim_.numpy())
 
 if __name__ == "__main__":
     from common import parse_args
     args = parse_args()
     frames_o, frames_d = read_videos(args)
     psnr_, ssim_ = quality(frames_o, frames_d)
-    data_append(args=args, data=list(psnr_.numpy()), name="psnr")
-    data_append(args=args, data=list(ssim_.numpy()), name="ssim")
+    data_append(args=args, data=psnr_, name="psnr")
+    data_append(args=args, data=ssim_, name="ssim")
