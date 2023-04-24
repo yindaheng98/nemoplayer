@@ -1,15 +1,14 @@
 import argparse
 import logging
-import torch
-from piq import psnr, ssim
+import os
+import ffmpeg
 
-from common import read_videos, data_append, read_video_meta, read_video_sequence
+from common import read_video_meta, read_video_sequence
 from quality import quality
 
 logging.basicConfig(level=logging.INFO)
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--name', type=str, required=True, help='Name of the video')
 parser.add_argument('--origin', type=str, required=True, help='Origin video path')
 parser.add_argument('--destin', type=str, required=True, help='Proceeded video path')
 parser.add_argument('--datadir', type=str, required=True, help='Dir for data')
@@ -53,13 +52,23 @@ def quality_long(args, batch_size):
         psnr_, ssim_ = quality(frames_o, frames_d)
         psnrs.extend(psnr_)
         ssims.extend(ssim_)
-        print(psnr_)
-        print(ssim_)
-    print(psnrs)
-    print(ssims)
+        name = os.path.splitext(os.path.basename(args.destin))[0]
+        print(name, start, start + frame, psnr_)
+        print(name, start, start + frame, ssim_)
     return psnrs, ssims
-    
 
 if __name__ == "__main__":
     args = parser.parse_args()
+    name = os.path.splitext(os.path.basename(args.destin))[0]
+    
     psnr_, ssim_ = quality_long(args, batch_size=16)
+    with open(os.path.join(args.datadir, "psnr.csv"), "a+", encoding='utf8') as f:
+        f.write(f"{name},{','.join(str(d) for d in psnr_)}\n")
+    with open(os.path.join(args.datadir, "ssim.csv"), "a+", encoding='utf8') as f:
+        f.write(f"{name},{','.join(str(d) for d in ssim_)}\n")
+    
+    probe = ffmpeg.probe(args.destin, show_frames=None)
+    with open(os.path.join(args.datadir, "size.csv"), "a+", encoding='utf8') as f:
+        f.write(f"{name},{','.join(str(frame['pkt_size']) for frame in probe['frames'])}\n")
+    with open(os.path.join(args.datadir, "keyframe.csv"), "a+", encoding='utf8') as f:
+        f.write(f"{name},{','.join(str(frame['key_frame']) for frame in probe['frames'])}\n")
