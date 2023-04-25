@@ -117,6 +117,16 @@ VIDEOROOT=~/dataset/ugc-dataset/original_videos_h264
 python3 ./tests/runner.py --tasks ./tasks_bitrates_quality.sh --shuffle --preprocess "export NAME=bitrates" --devices 0,1,2,3,4,5,6,7,0,1,2,3,4,5,6,7
 ```
 
+```sh
+for b in 4M 2M 1M 256k 512k; do
+mkdir -p bitrates_$b
+cat ./tests/data/bitrates/*/$b/keyframe.csv >> bitrates_$b/keyframe.csv
+cat ./tests/data/bitrates/*/$b/size.csv >> bitrates_$b/size.csv
+cat ./tests/data/bitrates/*/$b/psnr.csv >> bitrates_$b/psnr.csv
+cat ./tests/data/bitrates/*/$b/ssim.csv >> bitrates_$b/ssim.csv
+done
+```
+
 ## Build .so and .a
 
 ```sh
